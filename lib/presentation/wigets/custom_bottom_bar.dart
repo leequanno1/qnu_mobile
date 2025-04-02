@@ -37,21 +37,14 @@ class CustomBottomBar extends StatelessWidget {
             ),
             items: [
               BottomBarItem(
-                icon: const Icon(PhosphorIconsBold.horse),
-                title: const Text('Tổ chức'),
+                icon: const Icon(PhosphorIconsBold.house),
+                title: const Text('Bài đăng'),
                 selectedColor: AppColors.primary,
                 unSelectedColor: Colors.grey,
               ),
               BottomBarItem(
-                icon: const Icon(PhosphorIconsBold.usersThree),
-                title: const Text('Người dùng'),
-                selectedColor: AppColors.primary,
-                unSelectedColor: Colors.grey,
-              ),
-              // Center empty item for FAB
-              BottomBarItem(
-                icon: const Icon(PhosphorIconsBold.elevator),
-                title: const Text('Phòng ban'),
+                icon: const Icon(PhosphorIconsBold.calendarBlank),
+                title: const Text('Sự kiện'),
                 selectedColor: AppColors.primary,
                 unSelectedColor: Colors.grey,
               ),

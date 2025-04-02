@@ -1,0 +1,19 @@
+import 'package:flutter/material.dart';
+import 'package:qnu_mobile/assets/app_color.dart';
+
+ButtonStyle borderButtonEnable = ElevatedButton.styleFrom(
+  backgroundColor: AppColors.background,
+  foregroundColor: Colors.black,
+  disabledForegroundColor: Colors.black12,
+  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+  textStyle: const TextStyle(
+    fontSize: 16, 
+    fontWeight: FontWeight.bold,
+    color: Colors.black54,
+  ),
+  shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+      side: const BorderSide(color: AppColors.outline, width: 1)),
+);
+
+

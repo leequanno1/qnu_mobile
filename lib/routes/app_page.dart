@@ -1,6 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:qnu_mobile/biding/main_layout_biding.dart';
 import 'package:qnu_mobile/middlewares/authent_middleware.dart';
-import 'package:qnu_mobile/presentation/views/main_layout.dart';
+import 'package:qnu_mobile/presentation/views/main/main_layout.dart';
 import 'package:qnu_mobile/routes/route_name.dart';
 
 class AppPages {
@@ -9,6 +10,7 @@ class AppPages {
     GetPage(
       name: RouteNames.splash,
       page: () => const MainLayout(),
+      binding: MainLayoutBiding(),
       middlewares: [AuthMiddleware()],
     ),
 

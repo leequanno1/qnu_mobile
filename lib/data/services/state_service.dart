@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 class StateService extends GetxService {
-  final _isAuthenticated = false.obs;
+  final _isAuthenticated = true.obs;
 
   bool get isAuthenticated => _isAuthenticated.value;
 

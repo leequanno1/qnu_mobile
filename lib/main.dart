@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Restaurant 4.0',
+      title: 'ORG',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       // home: const MainLayout(),

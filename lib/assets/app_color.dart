@@ -17,12 +17,14 @@ class AppColors {
   
   // Neutral Colors
   static const Color outline = Color(0xFF7C8EA9);
+  static const Color articalBackground = Color(0xFFF1F1F1);
   static const Color lightBackground = Color(0xFFFAFAFA);
   static const Color lightSurface = Color(0xFFFFFFFF);
   static const Color darkBackground = Color(0xFF121212);
   static const Color darkSurface = Color(0xFF1E1E1E);
   static const Color disableButton = Color.fromARGB(255, 102, 94, 94);
   static const Color link = Color(0xFF7C8EA9);
+  static const Color textRed = Color.fromARGB(178, 230, 0, 0);
 
   static const ColorScheme lightColorScheme = ColorScheme(
     brightness: Brightness.light,
