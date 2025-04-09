@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
 import 'package:qnu_mobile/controller/main/profile_controller.dart';
+import 'package:qnu_mobile/presentation/styles/button_style.dart';
 
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({super.key});
@@ -73,7 +74,14 @@ class _StaffCard extends StatelessWidget {
             _buildDetailRow('Email:', 'exampleadmin@mail.com'),
             _buildDetailRow('Tài khoản:', 'Giảng viên.'),
             SizedBox(height: 10,),
-            ElevatedButton(onPressed: (){}, child: Text("Đăng xuất"))
+            SizedBox(
+              width: 200,
+              child: ElevatedButton(
+                style: redBackgroundButton,
+                onPressed: (){}, 
+                child: Text("Đăng xuất")
+              ),
+            )
           ],
         ),
       ),
@@ -139,6 +147,15 @@ class _StudentCard extends StatelessWidget {
             _buildDetailRow('Liên hệ:', '09xx xxx xxx'),
             _buildDetailRow('Email:', 'exampleadmin@mail.com'),
             _buildDetailRow('Tài khoản:', 'Giảng viên.'),
+            SizedBox(height: 10,),
+            SizedBox(
+              width: 200,
+              child: ElevatedButton(
+                style: redBackgroundButton,
+                onPressed: (){}, 
+                child: Text("Đăng xuất")
+              ),
+            )
           ],
         ),
       ),
@@ -152,9 +169,12 @@ Widget _buildDetailRow(String title, String value) {
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(fontWeight: FontWeight.bold),
+        SizedBox(
+          width: 80,
+          child: Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+          ),
         ),
         SizedBox(width: 8),
         Expanded(

@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:qnu_mobile/presentation/views/main/event_view.dart';
 import 'package:qnu_mobile/presentation/views/main/post_view.dart';
 import 'package:qnu_mobile/presentation/views/main/profile_view.dart';
+import 'package:qnu_mobile/presentation/wigets/appbar/event_appbar.dart';
+import 'package:qnu_mobile/presentation/wigets/appbar/post_appbar.dart';
+import 'package:qnu_mobile/presentation/wigets/appbar/profile_appbar.dart';
 import 'package:qnu_mobile/presentation/wigets/drawer_widget.dart';
 
 class MainLayoutController extends GetxController {
@@ -16,10 +19,13 @@ class MainLayoutController extends GetxController {
     const ProfileView(),
   ];
 
-  final List<Text> appBars = [
-    const Text("Bài đăng",style: TextStyle(color: Colors.black),),
-    const Text("Sự kiện",style: TextStyle(color: Colors.black),),
-    const Text("Thông tin cá nhân",style: TextStyle(color: Colors.black),),
+  final List<AppBar> appBars = [
+    // Post
+    PostAppbar.getAppBar(),
+    // Event
+    EventAppbar.getAppBar(),
+    // Profile
+    ProfileAppbar.getAppBar(),
   ];
 
   final List<Widget?> drawers = [

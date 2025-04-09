@@ -16,4 +16,18 @@ ButtonStyle borderButtonEnable = ElevatedButton.styleFrom(
       side: const BorderSide(color: AppColors.outline, width: 1)),
 );
 
+ButtonStyle redBackgroundButton = ElevatedButton.styleFrom(
+  backgroundColor: AppColors.textRed,
+  foregroundColor: Colors.white,
+  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+  textStyle: const TextStyle(
+    fontSize: 16, 
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
+  ),
+  shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(50),
+  ),
+);
+
 
