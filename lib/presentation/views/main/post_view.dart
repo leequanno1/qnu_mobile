@@ -5,6 +5,7 @@ import 'package:qnu_mobile/controller/main/post_controller.dart';
 import 'package:qnu_mobile/models/image.dart';
 import 'package:qnu_mobile/models/post.dart';
 import 'package:qnu_mobile/presentation/wigets/image_container.dart';
+import 'package:qnu_mobile/routes/route_name.dart';
 import 'package:qnu_mobile/utils/date_time_format.dart';
 
 class PostView extends GetView<PostController> {
@@ -99,12 +100,17 @@ class _PublicPostItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    post.orgId,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17),
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed(RouteNames.org);
+                    },
+                    child: Text(
+                      post.orgId,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17),
+                    ),
                   ),
                   Row(
                     spacing: 10,

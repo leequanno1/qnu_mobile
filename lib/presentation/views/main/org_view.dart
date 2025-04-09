@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:qnu_mobile/controller/main/org_controller.dart';
+import 'package:qnu_mobile/controller/org/org_controller.dart';
 
 class OrgView extends GetView<OrgController> {
   const OrgView({super.key});
