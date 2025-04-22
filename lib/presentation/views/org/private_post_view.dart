@@ -6,7 +6,7 @@ import 'package:qnu_mobile/utils/date_time_format.dart';
 
 class PrivatePostView extends StatelessWidget {
   final Post post;
-  const PrivatePostView({super.key, required this.post});
+  const PrivatePostView({super.key, required this.post,});
 
   @override
   Widget build(BuildContext context) {

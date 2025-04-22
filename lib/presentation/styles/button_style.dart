@@ -30,6 +30,20 @@ ButtonStyle redBackgroundButton = ElevatedButton.styleFrom(
   ),
 );
 
+ButtonStyle buttonPrimary = ElevatedButton.styleFrom(
+  backgroundColor: AppColors.primary,
+  foregroundColor: Colors.white,
+  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+  textStyle: const TextStyle(
+    fontSize: 16, 
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
+  ),
+  shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(50),
+  ),
+);
+
 ButtonStyle switchButtonSeleted = ElevatedButton.styleFrom(
   backgroundColor: AppColors.primary,
   foregroundColor: Colors.white,

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
+import 'package:qnu_mobile/controller/org/content_moderation_controller.dart';
 import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
 import 'package:qnu_mobile/presentation/views/org/private_event_view.dart';
 import 'package:qnu_mobile/presentation/views/org/private_post_view.dart';
+import 'package:qnu_mobile/routes/route_name.dart';
 
 class OrgScreen extends GetView<OrgController> {
   const OrgScreen({super.key});
@@ -33,21 +35,40 @@ class OrgScreen extends GetView<OrgController> {
             icon: Icon(PhosphorIconsBold.caretLeft)),
         actions: [
           PopupMenuButton(
+            onSelected: (value) {
+              switch(value){
+                case 0:
+                  Get.toNamed(RouteNames.contentModeration, arguments: ContentModerationController.postEnable);
+                  break;
+                case 1:
+                  Get.toNamed(RouteNames.contentModeration, arguments: ContentModerationController.eventEnable);
+                  break;
+                case 2:
+                case 3:
+                case 4:
+                  break;
+              }
+            },
             itemBuilder: (context) {
               return [
                 PopupMenuItem(
+                  value: 0,
                     child: const Text("Duyệt bài viết",
                         style: TextStyle(color: Colors.black))),
                 PopupMenuItem(
+                  value: 1,
                     child: const Text("Duyệt sự kiện",
                         style: TextStyle(color: Colors.black))),
                 PopupMenuItem(
+                  value: 2,
                     child: const Text("Chỉnh sửa thông tin",
                         style: TextStyle(color: Colors.black))),
                 PopupMenuItem(
+                  value: 3,
                     child: const Text("Tạo bài viết",
                         style: TextStyle(color: Colors.black))),
                 PopupMenuItem(
+                  value: 4,
                     child: const Text("Tạo sự kiện",
                         style: TextStyle(color: Colors.black))),
               ];

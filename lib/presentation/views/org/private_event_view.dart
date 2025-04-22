@@ -7,7 +7,8 @@ import 'package:qnu_mobile/utils/date_time_format.dart';
 
 class PrivateEventView extends StatelessWidget {
   final Event eventItem;
-  const PrivateEventView({super.key, required this.eventItem});
+  final bool forApproved;
+  const PrivateEventView({super.key, required this.eventItem, this.forApproved = false});
 
   @override
   Widget build(BuildContext context) {
@@ -49,16 +50,17 @@ class PrivateEventView extends StatelessWidget {
                     ],
                   ),
                   Spacer(),
-                  SizedBox(
-                    height: 45,
-                    width: 140,
-                    child: ElevatedButton(
-                        onPressed: eventItem.begin.isBefore(DateTime.now())?null:(){},
-                        style: borderButtonEnable,
-                        child: eventItem.join
-                            ? Text("Đã đăng ký")
-                            : Text("Đăng ký")),
-                  )
+                  if(!forApproved)
+                    SizedBox(
+                      height: 45,
+                      width: 140,
+                      child: ElevatedButton(
+                          onPressed: eventItem.begin.isBefore(DateTime.now())?null:(){},
+                          style: borderButtonEnable,
+                          child: eventItem.join
+                              ? Text("Đã đăng ký")
+                              : Text("Đăng ký")),
+                    )
                 ],
               ),
               // time
