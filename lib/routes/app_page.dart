@@ -30,6 +30,12 @@ class AppPages {
       name: RouteNames.contentModeration, 
       page: () => const ContentModerationScreen(),
       binding: ContentModerationBiding(),
-    )
+    ),
+
+    // GetPage(
+    //   name: RouteNames.createPost, 
+    //   page: () => const CreatePostView(),
+    //   binding: CreatePostBiding(),
+    // )
   ];
 }

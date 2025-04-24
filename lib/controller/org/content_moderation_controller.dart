@@ -8,7 +8,7 @@ class ContentModerationController extends GetxController {
   final RxInt _switchFlag = 0.obs;
   final RxList<Post> _posts = RxList.empty();
   final RxList<Event> _event = RxList.empty();
-  
+
   static const int postEnable = 0;
   static const int eventEnable = 1;
   RxInt get switchFlag => _switchFlag;

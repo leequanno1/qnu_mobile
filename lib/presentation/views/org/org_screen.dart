@@ -5,6 +5,8 @@ import 'package:qnu_mobile/assets/app_color.dart';
 import 'package:qnu_mobile/controller/org/content_moderation_controller.dart';
 import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
+import 'package:qnu_mobile/presentation/views/org/create_event_view.dart';
+import 'package:qnu_mobile/presentation/views/org/create_post_view.dart';
 import 'package:qnu_mobile/presentation/views/org/private_event_view.dart';
 import 'package:qnu_mobile/presentation/views/org/private_post_view.dart';
 import 'package:qnu_mobile/routes/route_name.dart';
@@ -44,8 +46,20 @@ class OrgScreen extends GetView<OrgController> {
                   Get.toNamed(RouteNames.contentModeration, arguments: ContentModerationController.eventEnable);
                   break;
                 case 2:
+                  break;
                 case 3:
+                  showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true, // Full height
+                      builder: (context) => CreatePostView(org: controller.org),
+                    );
+                  break;
                 case 4:
+                  showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true, // Full height
+                      builder: (context) => CreateEventView(org: controller.org),
+                    );
                   break;
               }
             },

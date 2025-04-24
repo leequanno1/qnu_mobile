@@ -15,6 +15,8 @@ class RouteNames {
   // static const String splash = '/org';
   static const String contentModeration = "/content-moderation";
   static const String post = '/post';
+  static const String createPost = '/create-post';
   static const String event = '/event';
+  static const String createEvent = '/create-event';
 
 }
