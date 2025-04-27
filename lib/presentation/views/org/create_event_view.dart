@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
+import 'package:qnu_mobile/controller/org/date_time_picker_controller.dart';
 import 'package:qnu_mobile/controller/image_picker_controller.dart';
 import 'package:qnu_mobile/controller/org/create_event_controller.dart';
 import 'package:qnu_mobile/models/org.dart';
+import 'package:qnu_mobile/utils/date_time_format.dart';
 
 class CreateEventView extends StatelessWidget {
   final Org org;
@@ -14,7 +16,10 @@ class CreateEventView extends StatelessWidget {
   Widget build(BuildContext context) {
     final ImagePickerController imgController =
         Get.put(ImagePickerController());
-    CreateEventController controller = Get.put(CreateEventController());
+    final CreateEventController controller =
+        Get.put(CreateEventController());
+    final DateTimePickerController dateController =
+        Get.put(DateTimePickerController());
     return DraggableScrollableSheet(
       initialChildSize: 1,
       minChildSize: .9,
@@ -32,6 +37,7 @@ class CreateEventView extends StatelessWidget {
                       Get.back();
                       imgController.clearImages();
                       controller.inputReset();
+                      dateController.dataReset();
                     },
                     icon: Icon(
                       PhosphorIconsBold.caretLeft,
@@ -71,6 +77,63 @@ class CreateEventView extends StatelessWidget {
                           labelStyle: TextStyle(color: Colors.black)),
                       validator: (value) =>
                           value == null || value.isEmpty ? 'Sự kiện mới' : null,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Row(
+                      spacing: 10,
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              dateController.selectStartTime(context);
+                            },
+                            child: Container(
+                              alignment: AlignmentDirectional.center,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: AppColors.outline, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              child: Obx(
+                                () => Text(
+                                  dateController.startTime.value == null
+                                      ? "Bắt đầu"
+                                      : DateTimeFormat.toDateTime(dateController.startTime.value),
+                                  style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold, fontSize: 18),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              dateController.selectEndTime(context);
+                            },
+                            child: Container(
+                              height: 50,
+                              alignment: AlignmentDirectional.center,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: AppColors.outline, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              child: Obx(() => Text(
+                                dateController.endTime.value == null
+                                      ? "Kết thúc"
+                                      : DateTimeFormat.toDateTime(dateController.endTime.value),
+                                style: TextStyle(color: AppColors.textRed, fontWeight: FontWeight.bold, fontSize: 18),
+                              ),),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   const SizedBox(
