@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
 import 'package:qnu_mobile/controller/main/profile_controller.dart';
+import 'package:qnu_mobile/presentation/dialog/logout_dialog.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
 
 class ProfileView extends GetView<ProfileController> {
@@ -78,7 +79,9 @@ class _StaffCard extends StatelessWidget {
               width: 200,
               child: ElevatedButton(
                 style: redBackgroundButton,
-                onPressed: (){}, 
+                onPressed: (){
+                  LogoutDialog.instance.render(context,null);
+                }, 
                 child: Text("Đăng xuất")
               ),
             )
@@ -152,7 +155,9 @@ class _StudentCard extends StatelessWidget {
               width: 200,
               child: ElevatedButton(
                 style: redBackgroundButton,
-                onPressed: (){}, 
+                onPressed: () {
+                  LogoutDialog.instance.render(context,null);
+                },
                 child: Text("Đăng xuất")
               ),
             )
