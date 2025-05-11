@@ -38,50 +38,50 @@ class PrivatePostView extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(post.posterId,
+                      Text(post.memberInfo.displayName,
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize: 17)),
-                      Text(DateTimeFormat.toDateTime(post.insDate),
+                      Text(DateTimeFormat.toDateTime(post.postDto.insDate),
                           style: TextStyle(color: Colors.black))
                     ],
                   )
                 ],
               ),
               // text
-              Text(post.postTitle,
+              Text(post.postDto.postTitle,
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
-              Text(post.postContent, style: TextStyle(color: Colors.black)),
+              Text(post.postDto.postContent, style: TextStyle(color: Colors.black)),
               // images
-              if(post.images.isNotEmpty)
+              if(post.postDto.images.isNotEmpty)
                 Container(
                   height: 180,
                   decoration: BoxDecoration(),
                   child: ListView.builder(
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: post.images.length,
+                    itemCount: post.postDto.images.length,
                     itemBuilder: (context, index) {
                       double boxWidth = MediaQuery.of(context).size.width - 43;
-                      if(post.images.length > 2){
+                      if(post.postDto.images.length > 2){
                         boxWidth = 135;
-                      } else if (post.images.length > 1){
+                      } else if (post.postDto.images.length > 1){
                         boxWidth = (boxWidth - 10)/2;
                       } else {
                         return SizedBox(
                           width: boxWidth,
                           height: 180,
-                          child: ImageContainer(imageDTO: post.images[index]));
+                          child: ImageContainer(imageDTO: post.postDto.images[index]));
                       }
                       return Container(
                         height: 180,
                         width: boxWidth,
                         margin: EdgeInsets.only(right: 5),
-                        child: ImageContainer(imageDTO: post.images[index]),
+                        child: ImageContainer(imageDTO: post.postDto.images[index]),
                       );
                     },
                   ),

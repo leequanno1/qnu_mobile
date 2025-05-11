@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
+import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/models/org.dart';
 import 'package:qnu_mobile/presentation/wigets/org_drawer_item.dart';
 
 class DrawerWidget{
-  static Drawer getDrawer() {
+  static Drawer getDrawer(){
+    OrgController orgController = Get.find<OrgController>();
+    List<Org> orgList = orgController.getOrgList();
     return Drawer(
       child: Padding(
         padding: EdgeInsets.all(10),
@@ -24,13 +28,15 @@ class DrawerWidget{
                 decoration: BoxDecoration(
                   border: Border.all(color: AppColors.outline),
                 ),
-                child: ListView(
+                child: ListView.builder(
                   padding: EdgeInsets.only(top: 7.5),
-                  children: [
-                    OrgDrawerItem(org: Org(orgId: "orgId", orgName: "orgName", orgDescription: "orgDescription", orgAvatar: "orgAvatar", orgBackground: "orgBackground", members: 10, posts: 10, events: 10, insDate: DateTime.now(), delFlg: false)),
-                    OrgDrawerItem(org: Org(orgId: "orgId", orgName: "orgName", orgDescription: "orgDescription", orgAvatar: "orgAvatar", orgBackground: "orgBackground", members: 10, posts: 10, events: 10, insDate: DateTime.now(), delFlg: false)),
-                    OrgDrawerItem(org: Org(orgId: "orgId", orgName: "orgName", orgDescription: "orgDescription", orgAvatar: "orgAvatar", orgBackground: "orgBackground", members: 10, posts: 10, events: 10, insDate: DateTime.now(), delFlg: false)),
-                  ],
+                  itemCount: orgList.length,
+                  itemBuilder: (context, index) {
+                    return OrgDrawerItem(org: orgList[index]);
+                  },
+                  // children: [
+                  //   OrgDrawerItem(org: Org(orgId: "orgId", orgName: "orgName", orgDescription: "orgDescription", orgAvatar: "orgAvatar", orgBackground: "orgBackground", members: 10, posts: 10, events: 10, insDate: DateTime.now(), delFlg: false)),
+                  // ],
                 ),
               ),
             ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
 import 'package:qnu_mobile/controller/main/post_controller.dart';
-import 'package:qnu_mobile/models/image.dart';
+import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/models/post.dart';
 import 'package:qnu_mobile/presentation/wigets/image_container.dart';
 import 'package:qnu_mobile/routes/route_name.dart';
@@ -13,73 +13,28 @@ class PostView extends GetView<PostController> {
 
   @override
   Widget build(BuildContext context) {
+    PostController controller = Get.find();
+    controller.posts.clear();
+    controller.loadPost();
     return Container(
       decoration: BoxDecoration(
         color: AppColors.background
       ),
-      child: ListView(
-        children: [
-          _PublicPostItem(
-            post: Post(
-                postId: "postId",
-                posterId: "posterId",
-                postTitle: "postTitle",
-                postContent: "postContent asdasd as \n asdasd \n asdasd",
-                comments: 0,
-                insDate: DateTime.now(),
-                delFlg: false,
-                isApproved: true,
-                orgId: "orgId",
-                images: [
-                  ImageDTO(imageId: "imageId",parentId: "parentId",imageUrl: "imageUrl",insDate: DateTime.now(),delFlg: false),
-                  ImageDTO(imageId: "imageId",parentId: "parentId",imageUrl: "imageUrl",insDate: DateTime.now(),delFlg: false),
-                  ImageDTO(imageId: "imageId",parentId: "parentId",imageUrl: "imageUrl",insDate: DateTime.now(),delFlg: false),
-                ]),
-          ),
-          _PublicPostItem(
-            post: Post(
-                postId: "postId",
-                posterId: "posterId",
-                postTitle: "postTitle",
-                postContent: "postContent asdasd as \n asdasd \n asdasd",
-                comments: 0,
-                insDate: DateTime.now(),
-                delFlg: false,
-                isApproved: true,
-                orgId: "orgId",
-                images: [
-                  ImageDTO(imageId: "imageId",parentId: "parentId",imageUrl: "imageUrl",insDate: DateTime.now(),delFlg: false),
-                  ImageDTO(imageId: "imageId",parentId: "parentId",imageUrl: "imageUrl",insDate: DateTime.now(),delFlg: false),
-                  ImageDTO(imageId: "imageId",parentId: "parentId",imageUrl: "imageUrl",insDate: DateTime.now(),delFlg: false),
-                ]),
-          ),
-          _PublicPostItem(
-            post: Post(
-                postId: "postId",
-                posterId: "posterId",
-                postTitle: "postTitle",
-                postContent: "postContent asdasd as \n asdasd \n asdasd",
-                comments: 0,
-                insDate: DateTime.now(),
-                delFlg: false,
-                isApproved: true,
-                orgId: "orgId",
-                images: [
-                  ImageDTO(imageId: "imageId",parentId: "parentId",imageUrl: "imageUrl",insDate: DateTime.now(),delFlg: false),
-                  ImageDTO(imageId: "imageId",parentId: "parentId",imageUrl: "imageUrl",insDate: DateTime.now(),delFlg: false),
-                  ImageDTO(imageId: "imageId",parentId: "parentId",imageUrl: "imageUrl",insDate: DateTime.now(),delFlg: false),
-                ]),
-          )
-        ],
-      ),
+      child: Obx(() => ListView.builder(
+        itemCount: controller.posts.length,
+        itemBuilder: (context, index) {
+          return _PublicPostItem(post: controller.posts[index], controller: controller,);
+        },
+      ),),
     );
   }
 }
 
 class _PublicPostItem extends StatelessWidget {
   final Post post;
+  final PostController controller;
 
-  const _PublicPostItem({required this.post});
+  const _PublicPostItem({required this.post, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -102,10 +57,11 @@ class _PublicPostItem extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
+                      Get.find<OrgController>().setSelectedOrg(controller.orgs[post.postDto.orgId]!.orgId);
                       Get.toNamed(RouteNames.org);
                     },
                     child: Text(
-                      post.orgId,
+                      controller.orgs[post.postDto.orgId]!.orgName,
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -126,12 +82,12 @@ class _PublicPostItem extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(post.posterId,
+                          Text(post.memberInfo.displayName,
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17)),
-                          Text(DateTimeFormat.toDateTime(post.insDate),
+                          Text(DateTimeFormat.toDateTime(post.postDto.insDate),
                               style: TextStyle(color: Colors.black))
                         ],
                       )
@@ -140,38 +96,38 @@ class _PublicPostItem extends StatelessWidget {
                 ],
               ),
               // text
-              Text(post.postTitle,
+              Text(post.postDto.postTitle,
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
-              Text(post.postContent, style: TextStyle(color: Colors.black)),
+              Text(post.postDto.postContent, style: TextStyle(color: Colors.black)),
               // images
-              if(post.images.isNotEmpty)
+              if(post.postDto.images.isNotEmpty)
                 Container(
                   height: 180,
                   decoration: BoxDecoration(),
                   child: ListView.builder(
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: post.images.length,
+                    itemCount: post.postDto.images.length,
                     itemBuilder: (context, index) {
                       double boxWidth = MediaQuery.of(context).size.width - 43;
-                      if(post.images.length > 2){
+                      if(post.postDto.images.length > 2){
                         boxWidth = 135;
-                      } else if (post.images.length > 1){
+                      } else if (post.postDto.images.length > 1){
                         boxWidth = (boxWidth - 10)/2;
                       } else {
                         return SizedBox(
                           width: boxWidth,
                           height: 180,
-                          child: ImageContainer(imageDTO: post.images[index]));
+                          child: ImageContainer(imageDTO: post.postDto.images[index]));
                       }
                       return Container(
                         height: 180,
                         width: boxWidth,
                         margin: EdgeInsets.only(right: 5),
-                        child: ImageContainer(imageDTO: post.images[index]),
+                        child: ImageContainer(imageDTO: post.postDto.images[index]),
                       );
                     },
                   ),

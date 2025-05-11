@@ -12,6 +12,7 @@ import 'package:qnu_mobile/presentation/views/org/private_event_view.dart';
 import 'package:qnu_mobile/presentation/views/org/private_post_view.dart';
 import 'package:qnu_mobile/presentation/views/org/view_org_info_view.dart';
 import 'package:qnu_mobile/routes/route_name.dart';
+import 'package:qnu_mobile/utils/http_ultil.dart';
 
 class OrgScreen extends GetView<OrgController> {
   const OrgScreen({super.key});
@@ -29,7 +30,7 @@ class OrgScreen extends GetView<OrgController> {
         shape: Border(bottom: BorderSide(color: AppColors.outline)),
         title: SizedBox(
             width: double.maxFinite,
-            child: Text("Organization name",
+            child: Text(controller.org.orgName,
                 style: TextStyle(color: Colors.black))),
         scrolledUnderElevation: 0,
         leading: IconButton(
@@ -42,9 +43,11 @@ class OrgScreen extends GetView<OrgController> {
             onSelected: (value) {
               switch(value){
                 case 0:
+                  Get.put(ContentModerationController()).orgId.value = controller.org.orgId;
                   Get.toNamed(RouteNames.contentModeration, arguments: ContentModerationController.postEnable);
                   break;
                 case 1:
+                  Get.put(ContentModerationController()).orgId.value = controller.org.orgId;
                   Get.toNamed(RouteNames.contentModeration, arguments: ContentModerationController.eventEnable);
                   break;
                 case 2:
@@ -102,10 +105,11 @@ class OrgScreen extends GetView<OrgController> {
           // back ground
           Container(
             margin: EdgeInsets.all(10),
-            height: 120,
+            height: 120, 
             decoration: BoxDecoration(
               color: AppColors.outline,
             ),
+            child: Image.network(HttpUtil.mapUrl(controller.org.orgBackground), fit: BoxFit.cover,),
           ),
           // group name
           Padding(
@@ -122,7 +126,7 @@ class OrgScreen extends GetView<OrgController> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Organization name",
+                    controller.org.orgName,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
@@ -139,7 +143,7 @@ class OrgScreen extends GetView<OrgController> {
             child: SizedBox(
                 width: double.maxFinite,
                 child: Text(
-                  "Thành viên: 10 người.",
+                  "Thành viên: ${controller.org.members} người.",
                   style: TextStyle(color: Colors.black, fontSize: 15),
                 )),
           ),

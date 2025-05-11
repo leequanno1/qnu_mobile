@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
+import 'package:qnu_mobile/controller/authent/authent_controller.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
+import 'package:qnu_mobile/routes/route_name.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    AuthentController auController = Get.find<AuthentController>();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SafeArea(
@@ -18,11 +22,15 @@ class LoginView extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 70,
+                  backgroundImage: AssetImage('assets/images/logo.webp'),
+                  backgroundColor: Colors.transparent,
                 ),
                 const SizedBox(height: 30,),
                 const Text("Đăng nhập", style: TextStyle(color: Colors.black87, fontSize: 35, fontWeight: FontWeight.bold),),
                 const SizedBox(height: 30,),
                 TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: auController.usernameController,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                       labelText: 'Tài khoản',
@@ -40,6 +48,8 @@ class LoginView extends StatelessWidget {
                 ),
                 const SizedBox(height: 20,),
                 TextFormField(
+                  obscureText:true,
+                  controller: auController.passwordController,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                       labelText: 'Mật khẩu',
@@ -58,9 +68,12 @@ class LoginView extends StatelessWidget {
                 const SizedBox(height: 10,),
                 const Text("Tài khoản hoặc mật khẩu không chính xác.", style: TextStyle(color: AppColors.error),),
                 const SizedBox(height: 15,),
-                SizedBox(width: double.maxFinite, height: 50, child: ElevatedButton(onPressed: () {}, style: buttonPrimary, child: Text("Đăng nhập"))),
+                SizedBox(width: double.maxFinite, height: 50, child: ElevatedButton(onPressed: () {auController.onSubmit();}, style: buttonPrimary, child: Text("Đăng nhập"))),
                 const SizedBox(height: 10,),
-                Text("Quên mật khẩu?", style: TextStyle(color: AppColors.primary, fontSize: 16, ),)
+                GestureDetector(
+                  onTap: () => Get.toNamed(RouteNames.forgotPassword),
+                  child: Text("Quên mật khẩu?", style: TextStyle(color: AppColors.primary, fontSize: 16, ),)
+                )
               ],
             ),
           ),
@@ -69,39 +82,3 @@ class LoginView extends StatelessWidget {
     );
   }
 }
-
-// return Scaffold(
-//       body: SafeArea(
-//         child: Column(
-//           mainAxisSize: MainAxisSize.max,
-//           children: [
-//             CircleAvatar(),
-//             const Text("Đăng nhập"),
-//             Form(
-//                 child: Column(
-//               children: [
-//                 Expanded(
-//                   child: TextFormField(
-//                     style: TextStyle(color: Colors.black),
-//                     decoration: InputDecoration(
-//                         labelText: 'Tài khoản',
-//                         labelStyle: TextStyle(color: Colors.black)),
-//                   ),
-//                 ),
-//                 Expanded(
-//                   child: TextFormField(
-//                     style: TextStyle(color: Colors.black),
-//                     decoration: InputDecoration(
-//                         labelText: 'Mật khẩu',
-//                         labelStyle: TextStyle(color: Colors.black)),
-//                   ),
-//                 ),
-//                 const Text("Tài khoản hoặc mật khẩu không chính xác."),
-//                 ElevatedButton(onPressed: () {}, child: Text("Đăng nhập")),
-//               ],
-//             )),
-//             Text("Quên mật khẩu?")
-//           ],
-//         ),
-//       ),
-//     );

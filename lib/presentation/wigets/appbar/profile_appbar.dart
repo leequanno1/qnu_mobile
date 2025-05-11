@@ -5,6 +5,7 @@ import 'package:qnu_mobile/assets/app_color.dart';
 class ProfileAppbar {
   static AppBar getAppBar(){
     return AppBar(
+      automaticallyImplyLeading: false,
       iconTheme: IconThemeData(color: Colors.black54),
       centerTitle: false,
       shape: Border(bottom: BorderSide(color: AppColors.outline)),

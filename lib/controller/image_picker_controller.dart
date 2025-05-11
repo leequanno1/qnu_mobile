@@ -8,9 +8,9 @@ class ImagePickerController extends GetxController {
   final ImagePicker _picker = ImagePicker();
 
   Future<void> pickImagesFromGallery() async {
-    final List<XFile>? pickedFiles = await _picker.pickMultiImage();
+    final List<XFile> pickedFiles = await _picker.pickMultiImage();
 
-    if (pickedFiles != null && pickedFiles.isNotEmpty) {
+    if (pickedFiles.isNotEmpty) {
       pickedImages.value = pickedFiles.map((xfile) => File(xfile.path)).toList();
     }
   }

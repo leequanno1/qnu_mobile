@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
-import 'package:qnu_mobile/models/image.dart';
+import 'package:qnu_mobile/data/dto/org_image.dart';
 
 class ImageContainer extends StatelessWidget {
   
-  final ImageDTO imageDTO;
+  final OrgImage imageDTO;
 
   const ImageContainer({super.key, required this.imageDTO});
 

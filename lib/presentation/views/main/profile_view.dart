@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
 import 'package:qnu_mobile/controller/main/profile_controller.dart';
+import 'package:qnu_mobile/data/services/state_service.dart';
+import 'package:qnu_mobile/data/services/user_type.dart';
 import 'package:qnu_mobile/presentation/dialog/logout_dialog.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
 
@@ -10,9 +12,10 @@ class ProfileView extends GetView<ProfileController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isStaff = Get.find<StateService>().userInfo.value?.userType != UserType.STUDENT;
     return SizedBox(
       width: double.maxFinite,
-      child: true? _StaffCard() : _StudentCard(),
+      child: isStaff? _StaffCard() : _StudentCard(),
     );
   }
 }

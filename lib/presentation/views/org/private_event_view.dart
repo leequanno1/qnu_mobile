@@ -40,12 +40,12 @@ class PrivateEventView extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(eventItem.hosterId,
+                      Text(eventItem.memberInfo.displayName,
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize: 17)),
-                      Text(DateTimeFormat.toDateTime(eventItem.insDate),
+                      Text(DateTimeFormat.toDateTime(eventItem.eventDto.insDate),
                           style: TextStyle(color: Colors.black))
                     ],
                   ),
@@ -55,9 +55,9 @@ class PrivateEventView extends StatelessWidget {
                       height: 45,
                       width: 140,
                       child: ElevatedButton(
-                          onPressed: eventItem.begin.isBefore(DateTime.now())?null:(){},
+                          onPressed: eventItem.eventDto.begin.isBefore(DateTime.now())?null:(){},
                           style: borderButtonEnable,
-                          child: eventItem.join
+                          child: eventItem.eventDto.join
                               ? Text("Đã đăng ký")
                               : Text("Đăng ký")),
                     )
@@ -66,46 +66,46 @@ class PrivateEventView extends StatelessWidget {
               // time
               Row(
                 children: [
-                  Text(DateTimeFormat.toDateTime(eventItem.begin), style: TextStyle(color: AppColors.primary, fontSize: 16, fontWeight: FontWeight.bold),),
+                  Text(DateTimeFormat.toDateTime(eventItem.eventDto.begin), style: TextStyle(color: AppColors.primary, fontSize: 16, fontWeight: FontWeight.bold),),
                   SizedBox(width: 30, height: 10,),
-                  Text(DateTimeFormat.toDateTime(eventItem.end), style: TextStyle(color: AppColors.textRed, fontSize: 16, fontWeight: FontWeight.bold),),
+                  Text(DateTimeFormat.toDateTime(eventItem.eventDto.end), style: TextStyle(color: AppColors.textRed, fontSize: 16, fontWeight: FontWeight.bold),),
                 ],
               ),
               // text
-              Text(eventItem.eventName,
+              Text(eventItem.eventDto.eventName,
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
-              Text(eventItem.eventDescription,
+              Text(eventItem.eventDto.eventDescription,
                   style: TextStyle(color: Colors.black)),
               // images
-              if (eventItem.images.isNotEmpty)
+              if (eventItem.eventDto.images.isNotEmpty)
                 Container(
                   height: 180,
                   decoration: BoxDecoration(),
                   child: ListView.builder(
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: eventItem.images.length,
+                    itemCount: eventItem.eventDto.images.length,
                     itemBuilder: (context, index) {
                       double boxWidth = MediaQuery.of(context).size.width - 43;
-                      if (eventItem.images.length > 2) {
+                      if (eventItem.eventDto.images.length > 2) {
                         boxWidth = 135;
-                      } else if (eventItem.images.length > 1) {
+                      } else if (eventItem.eventDto.images.length > 1) {
                         boxWidth = (boxWidth - 10) / 2;
                       } else {
                         return SizedBox(
                             width: boxWidth,
                             height: 180,
                             child:
-                                ImageContainer(imageDTO: eventItem.images[index]));
+                                ImageContainer(imageDTO: eventItem.eventDto.images[index]));
                       }
                       return Container(
                         height: 180,
                         width: boxWidth,
                         margin: EdgeInsets.only(right: 5),
-                        child: ImageContainer(imageDTO: eventItem.images[index]),
+                        child: ImageContainer(imageDTO: eventItem.eventDto.images[index]),
                       );
                     },
                   ),
