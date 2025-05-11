@@ -13,6 +13,9 @@ class ChangeGroupInfoController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
+  ChangeGroupInfoController() {
+    print('Init controller: ${hashCode}');
+  }
   // submit
   void submit(){
     if(avtImg.value.second) {
@@ -23,6 +26,11 @@ class ChangeGroupInfoController extends GetxController {
     }
     print(nameController.text);
     print(descriptionController.text);
+  }
+
+  void _setTextForInputController(){
+    nameController.text = org.orgName;
+    descriptionController.text = org.orgDescription;
   }
 
   // change avt
@@ -42,5 +50,10 @@ class ChangeGroupInfoController extends GetxController {
     if(xfile != null) {
       backgroundImg.value = Pair(File(xfile.path), true);
     }
+  }
+
+  void setOrg(Org org) {
+    this.org = org;
+    _setTextForInputController();
   }
 }

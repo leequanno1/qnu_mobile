@@ -1,16 +1,20 @@
 import 'package:get/get.dart';
+import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/data/dto/custom_response.dart';
 import 'package:qnu_mobile/data/dto/event_dto.dart';
 import 'package:qnu_mobile/data/dto/member_info.dart';
 import 'package:qnu_mobile/data/dto/org_image.dart';
 import 'package:qnu_mobile/data/services/state_service.dart';
 import 'package:qnu_mobile/models/event.dart';
+import 'package:qnu_mobile/models/org.dart';
 import 'package:qnu_mobile/utils/http_ultil.dart';
 
 class EventController extends GetxController {
+  final Map<String, Org> orgs = {};
   final RxList<Event> events = RxList.empty();
   final Map<String, MemberInfo> _members = {};
   StateService stateService = Get.find<StateService>();
+  final OrgController _orgController = Get.put(OrgController());
 
   Future<void> loadEvent() async {
     var headerPair = {
@@ -19,6 +23,7 @@ class EventController extends GetxController {
       'Authorization': stateService.getToken()
     };
     // load all post
+    orgs.addAll(await _orgController.loadOrgList("4451190096"));
     dynamic rawPosts = await HttpUtil.post("/api/event/get_all",
         body: {
           "from": 0,

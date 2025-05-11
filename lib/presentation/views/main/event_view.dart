@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
 import 'package:qnu_mobile/controller/main/event_controller.dart';
+import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/models/event.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
 import 'package:qnu_mobile/presentation/wigets/image_container.dart';
 import 'package:qnu_mobile/routes/route_name.dart';
 import 'package:qnu_mobile/utils/date_time_format.dart';
+import 'package:qnu_mobile/utils/http_ultil.dart';
 
 class EventView extends GetView<EventController> {
   const EventView({super.key});
@@ -20,7 +23,7 @@ class EventView extends GetView<EventController> {
       child: Obx(() => ListView.builder(
         itemCount: controller.events.length,
         itemBuilder: (context, index) {
-          return _PublicEventItem(event: controller.events[index],);
+          return _PublicEventItem(event: controller.events[index],controller: controller);
         },
       ),),
     );
@@ -29,8 +32,9 @@ class EventView extends GetView<EventController> {
 
 class _PublicEventItem extends StatelessWidget {
   final Event event;
+  final EventController controller;
 
-  const _PublicEventItem({required this.event});
+  const _PublicEventItem({required this.event, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +56,13 @@ class _PublicEventItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GestureDetector(
-                    onTap: () => Get.toNamed(RouteNames.org),
+                    onTap: () {
+                      Get.find<OrgController>().setSelectedOrg(
+                          event.eventDto.orgId);
+                      Get.toNamed(RouteNames.org);
+                    },
                     child: Text(
-                      event.memberInfo.displayName,
+                      controller.orgs[event.eventDto.orgId]!.orgName,
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -71,11 +79,25 @@ class _PublicEventItem extends StatelessWidget {
                             color: AppColors.secondary,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20))),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            HttpUtil.mapUrl(event.memberInfo.userAvatar),
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/empty.png',
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                        ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(event.memberInfo.displayName,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
@@ -86,14 +108,14 @@ class _PublicEventItem extends StatelessWidget {
                       ),
                       Spacer(),
                       SizedBox(
-                        height: 45,
-                        width: 140,
+                        height: 40,
+                        width: 95,
                         child: ElevatedButton(
                             onPressed: event.eventDto.begin.isBefore(DateTime.now())?null:(){},
                             style: borderButtonEnable,
                             child: event.eventDto.join
-                                ? Text("Đã đăng ký")
-                                : Text("Đăng ký")),
+                                ? Text("Đã đăng ký", style: TextStyle(fontSize: 12),)
+                                : Text("Đăng ký", style: TextStyle(fontSize: 12),)),
                       )
                     ],
                   )
@@ -131,17 +153,23 @@ class _PublicEventItem extends StatelessWidget {
                       } else if (event.eventDto.images.length > 1) {
                         boxWidth = (boxWidth - 10) / 2;
                       } else {
-                        return SizedBox(
-                            width: boxWidth,
-                            height: 180,
-                            child:
-                                ImageContainer(imageDTO: event.eventDto.images[index]));
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                          child: SizedBox(
+                              width: boxWidth,
+                              height: 190,
+                              child:
+                                  ImageContainer(imageDTO: event.eventDto.images[index])),
+                        );
                       }
-                      return Container(
-                        height: 180,
-                        width: boxWidth,
-                        margin: EdgeInsets.only(right: 5),
-                        child: ImageContainer(imageDTO: event.eventDto.images[index]),
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: Container(
+                          height: 190,
+                          width: boxWidth,
+                          margin: EdgeInsets.only(right: 5),
+                          child: ImageContainer(imageDTO: event.eventDto.images[index]),
+                        ),
                       );
                     },
                   ),

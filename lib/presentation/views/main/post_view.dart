@@ -7,6 +7,7 @@ import 'package:qnu_mobile/models/post.dart';
 import 'package:qnu_mobile/presentation/wigets/image_container.dart';
 import 'package:qnu_mobile/routes/route_name.dart';
 import 'package:qnu_mobile/utils/date_time_format.dart';
+import 'package:qnu_mobile/utils/http_ultil.dart';
 
 class PostView extends GetView<PostController> {
   const PostView({super.key});
@@ -17,15 +18,18 @@ class PostView extends GetView<PostController> {
     controller.posts.clear();
     controller.loadPost();
     return Container(
-      decoration: BoxDecoration(
-        color: AppColors.background
+      decoration: BoxDecoration(color: AppColors.background),
+      child: Obx(
+        () => ListView.builder(
+          itemCount: controller.posts.length,
+          itemBuilder: (context, index) {
+            return _PublicPostItem(
+              post: controller.posts[index],
+              controller: controller,
+            );
+          },
+        ),
       ),
-      child: Obx(() => ListView.builder(
-        itemCount: controller.posts.length,
-        itemBuilder: (context, index) {
-          return _PublicPostItem(post: controller.posts[index], controller: controller,);
-        },
-      ),),
     );
   }
 }
@@ -57,7 +61,8 @@ class _PublicPostItem extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Get.find<OrgController>().setSelectedOrg(controller.orgs[post.postDto.orgId]!.orgId);
+                      Get.find<OrgController>().setSelectedOrg(
+                          controller.orgs[post.postDto.orgId]!.orgId);
                       Get.toNamed(RouteNames.org);
                     },
                     child: Text(
@@ -78,6 +83,19 @@ class _PublicPostItem extends StatelessWidget {
                             color: AppColors.secondary,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20))),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            HttpUtil.mapUrl(post.memberInfo.userAvatar),
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/empty.png',
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                        ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,9 +119,10 @@ class _PublicPostItem extends StatelessWidget {
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
-              Text(post.postDto.postContent, style: TextStyle(color: Colors.black)),
+              Text(post.postDto.postContent,
+                  style: TextStyle(color: Colors.black), maxLines: 5, overflow: TextOverflow.ellipsis,),
               // images
-              if(post.postDto.images.isNotEmpty)
+              if (post.postDto.images.isNotEmpty)
                 Container(
                   height: 180,
                   decoration: BoxDecoration(),
@@ -113,21 +132,29 @@ class _PublicPostItem extends StatelessWidget {
                     itemCount: post.postDto.images.length,
                     itemBuilder: (context, index) {
                       double boxWidth = MediaQuery.of(context).size.width - 43;
-                      if(post.postDto.images.length > 2){
+                      if (post.postDto.images.length > 2) {
                         boxWidth = 135;
-                      } else if (post.postDto.images.length > 1){
-                        boxWidth = (boxWidth - 10)/2;
+                      } else if (post.postDto.images.length > 1) {
+                        boxWidth = (boxWidth - 10) / 2;
                       } else {
-                        return SizedBox(
-                          width: boxWidth,
-                          height: 180,
-                          child: ImageContainer(imageDTO: post.postDto.images[index]));
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                          child: SizedBox(
+                              width: boxWidth,
+                              height: 190,
+                              child: ImageContainer(
+                                  imageDTO: post.postDto.images[index])),
+                        );
                       }
-                      return Container(
-                        height: 180,
-                        width: boxWidth,
-                        margin: EdgeInsets.only(right: 5),
-                        child: ImageContainer(imageDTO: post.postDto.images[index]),
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: Container(
+                          height: 190,
+                          width: boxWidth,
+                          margin: EdgeInsets.only(right: 5),
+                          child: ImageContainer(
+                              imageDTO: post.postDto.images[index]),
+                        ),
                       );
                     },
                   ),

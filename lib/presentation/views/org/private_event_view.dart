@@ -4,11 +4,13 @@ import 'package:qnu_mobile/models/event.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
 import 'package:qnu_mobile/presentation/wigets/image_container.dart';
 import 'package:qnu_mobile/utils/date_time_format.dart';
+import 'package:qnu_mobile/utils/http_ultil.dart';
 
 class PrivateEventView extends StatelessWidget {
   final Event eventItem;
   final bool forApproved;
-  const PrivateEventView({super.key, required this.eventItem, this.forApproved = false});
+  const PrivateEventView(
+      {super.key, required this.eventItem, this.forApproved = false});
 
   @override
   Widget build(BuildContext context) {
@@ -34,41 +36,79 @@ class PrivateEventView extends StatelessWidget {
                     width: 40,
                     decoration: BoxDecoration(
                         color: AppColors.secondary,
-                        borderRadius:
-                            BorderRadius.all(Radius.circular(20))),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            HttpUtil.mapUrl(eventItem.memberInfo.userAvatar),
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/empty.png',
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                        ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(eventItem.memberInfo.displayName,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17)),
-                      Text(DateTimeFormat.toDateTime(eventItem.eventDto.insDate),
+                      Text(
+                        eventItem.memberInfo.displayName,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                          DateTimeFormat.toDateTime(eventItem.eventDto.insDate),
                           style: TextStyle(color: Colors.black))
                     ],
                   ),
                   Spacer(),
-                  if(!forApproved)
+                  if (!forApproved)
                     SizedBox(
-                      height: 45,
-                      width: 140,
+                      height: 40,
+                      width: 100,
                       child: ElevatedButton(
-                          onPressed: eventItem.eventDto.begin.isBefore(DateTime.now())?null:(){},
+                          onPressed:
+                              eventItem.eventDto.begin.isBefore(DateTime.now())
+                                  ? null
+                                  : () {},
                           style: borderButtonEnable,
                           child: eventItem.eventDto.join
-                              ? Text("Đã đăng ký")
-                              : Text("Đăng ký")),
+                              ? Text(
+                                  "Đã đăng ký",
+                                  style: TextStyle(fontSize: 12),
+                                )
+                              : Text("Đăng ký",
+                                  style: TextStyle(fontSize: 12))),
                     )
                 ],
               ),
               // time
               Row(
                 children: [
-                  Text(DateTimeFormat.toDateTime(eventItem.eventDto.begin), style: TextStyle(color: AppColors.primary, fontSize: 16, fontWeight: FontWeight.bold),),
-                  SizedBox(width: 30, height: 10,),
-                  Text(DateTimeFormat.toDateTime(eventItem.eventDto.end), style: TextStyle(color: AppColors.textRed, fontSize: 16, fontWeight: FontWeight.bold),),
+                  Text(
+                    DateTimeFormat.toDateTime(eventItem.eventDto.begin),
+                    style: TextStyle(
+                        color: AppColors.primary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    width: 30,
+                    height: 10,
+                  ),
+                  Text(
+                    DateTimeFormat.toDateTime(eventItem.eventDto.end),
+                    style: TextStyle(
+                        color: AppColors.textRed,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
               // text
@@ -77,8 +117,12 @@ class PrivateEventView extends StatelessWidget {
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
-              Text(eventItem.eventDto.eventDescription,
-                  style: TextStyle(color: Colors.black)),
+              Text(
+                eventItem.eventDto.eventDescription,
+                style: TextStyle(color: Colors.black),
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
+              ),
               // images
               if (eventItem.eventDto.images.isNotEmpty)
                 Container(
@@ -95,17 +139,24 @@ class PrivateEventView extends StatelessWidget {
                       } else if (eventItem.eventDto.images.length > 1) {
                         boxWidth = (boxWidth - 10) / 2;
                       } else {
-                        return SizedBox(
-                            width: boxWidth,
-                            height: 180,
-                            child:
-                                ImageContainer(imageDTO: eventItem.eventDto.images[index]));
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                          child: SizedBox(
+                              width: boxWidth,
+                              height: 190,
+                              child: ImageContainer(
+                                  imageDTO: eventItem.eventDto.images[index])),
+                        );
                       }
-                      return Container(
-                        height: 180,
-                        width: boxWidth,
-                        margin: EdgeInsets.only(right: 5),
-                        child: ImageContainer(imageDTO: eventItem.eventDto.images[index]),
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: Container(
+                          height: 190,
+                          width: boxWidth,
+                          margin: EdgeInsets.only(right: 5),
+                          child: ImageContainer(
+                              imageDTO: eventItem.eventDto.images[index]),
+                        ),
                       );
                     },
                   ),

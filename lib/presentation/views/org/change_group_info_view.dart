@@ -6,13 +6,15 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
 import 'package:qnu_mobile/controller/org/change_group_info_controller.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
+import 'package:qnu_mobile/utils/http_ultil.dart';
 
 class ChangeGroupInfoView extends StatelessWidget {
-  const ChangeGroupInfoView({super.key});
+  
+  ChangeGroupInfoView({super.key});
+  final controller = Get.find<ChangeGroupInfoController>();
 
   @override
   Widget build(BuildContext context) {
-    ChangeGroupInfoController controller = Get.put(ChangeGroupInfoController());
     return DraggableScrollableSheet(
       initialChildSize: 1,
       minChildSize: .9,
@@ -34,92 +36,104 @@ class ChangeGroupInfoView extends StatelessWidget {
                       color: AppColors.primary,
                     )),
                 title: Text(
-                  "Tạo bài viết",
+                  "Đổi thông tin nhóm",
                   style: TextStyle(color: Colors.black),
                 ),
                 elevation: 2,
                 shadowColor: Colors.black54,
                 surfaceTintColor: Colors.transparent),
-            body: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  // background
-                  Obx(
-                    () => GestureDetector(
-                      onTap: () async {
-                        await controller.changeBackground();
-                      },
-                      child: Container(
-                        height: 150,
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(color: AppColors.outline, width: 1),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    // background
+                    Obx(
+                      () => GestureDetector(
+                        onTap: () async {
+                          await controller.changeBackground();
+                        },
+                        child: Container(
+                          height: 150,
+                          width: double.maxFinite,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: AppColors.outline, width: 1),
+                          ),
+                          child:
+                              controller.backgroundImg.value.second?
+                              _renderImage(controller.backgroundImg.value.first):
+                              Image.network(HttpUtil.mapUrl(controller.org.orgBackground)),
                         ),
-                        child:
-                            _renderImage(controller.backgroundImg.value.first),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  // group
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 5,
-                    children: [
-                      // avt
-                      GestureDetector(
-                        onTap: () async {
-                          await controller.changeAvt();
-                        },
-                        child: Obx(() => CircleAvatar(
-                          radius: 50,
-                          backgroundImage: _avtRender(controller.avtImg.value.first),
-                        ),),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              controller: controller.nameController,
-                              style: TextStyle(color: Colors.black),
-                              decoration: InputDecoration(
-                                  labelText: 'Tên nhóm',
-                                  labelStyle: TextStyle(color: Colors.black)),
-                              validator: (value) =>
-                                  value == null || value.isEmpty
-                                      ? 'Nhóm mới'
-                                      : null,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            TextFormField(
-                              controller: controller.descriptionController,
-                              style: TextStyle(color: Colors.black),
-                              minLines: 5,
-                              maxLines: 100,
-                              decoration: InputDecoration(
-                                  alignLabelWithHint: true,
-                                  labelText: 'Mô tả nhóm',
-                                  labelStyle: TextStyle(color: Colors.black)),
-                            ),
-                            SizedBox(
-                                width: double.maxFinite,
-                                child: ElevatedButton(
-                                  onPressed: () => controller.submit(),
-                                  style: buttonPrimary,
-                                  child: Text("Lưu thay đổi"),
-                                ))
-                          ],
+                    SizedBox(
+                      height: 10,
+                    ),
+                    // group
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 5,
+                      children: [
+                        // avt
+                        GestureDetector(
+                          onTap: () async {
+                            await controller.changeAvt();
+                          },
+                          child: Obx(() => controller.avtImg.value.second ? CircleAvatar(
+                            radius: 50,
+                            backgroundImage: _avtRender(controller.avtImg.value.first),
+                          ) : ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                            child: SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: Image.network(HttpUtil.mapUrl(controller.org.orgAvatar), errorBuilder: (context, error, stackTrace) => SizedBox.shrink(),)),
+                          )
+                          ),
                         ),
-                      )
-                    ],
-                  )
-                ],
+                        Expanded(
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                controller: controller.nameController,
+                                style: TextStyle(color: Colors.black),
+                                decoration: InputDecoration(
+                                    labelText: 'Tên nhóm',
+                                    labelStyle: TextStyle(color: Colors.black)),
+                                validator: (value) =>
+                                    value == null || value.isEmpty
+                                        ? 'Nhóm mới'
+                                        : null,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                controller: controller.descriptionController,
+                                style: TextStyle(color: Colors.black),
+                                minLines: 5,
+                                maxLines: 100,
+                                expands: false,
+                                decoration: InputDecoration(
+                                    alignLabelWithHint: true,
+                                    labelText: 'Mô tả nhóm',
+                                    labelStyle: TextStyle(color: Colors.black)),
+                              ),
+                              SizedBox(
+                                  width: double.maxFinite,
+                                  child: ElevatedButton(
+                                    onPressed: () => controller.submit(),
+                                    style: buttonPrimary,
+                                    child: Text("Lưu thay đổi"),
+                                  ))
+                            ],
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

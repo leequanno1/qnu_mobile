@@ -28,8 +28,8 @@ class OrgController extends GetxController {
     _switchButtonIndex = postIndex.obs;
     _posts.clear();
     _events.clear();
-    PostController postController = Get.find<PostController>();
-    EventController eventController = Get.find<EventController>();
+    PostController postController = Get.put(PostController());
+    EventController eventController = Get.put(EventController());
     _posts.value = await postController.loadPostByOrgId(org.orgId);
     _events.value = await eventController.loadEventByOrgId(org.orgId);
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
+import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/models/org.dart';
 import 'package:qnu_mobile/routes/route_name.dart';
 
@@ -11,7 +12,10 @@ class OrgDrawerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.toNamed(RouteNames.org),
+      onTap: (){
+        Get.find<OrgController>().setSelectedOrg(org.orgId);
+        Get.toNamed(RouteNames.org);
+      },
       child: Padding(
         padding: const EdgeInsets.only(left: 7.5, right: 2),
         child: Container(

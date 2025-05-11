@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
+import 'package:qnu_mobile/controller/org/change_group_info_controller.dart';
 import 'package:qnu_mobile/controller/org/content_moderation_controller.dart';
 import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
@@ -21,9 +24,6 @@ class OrgScreen extends GetView<OrgController> {
   Widget build(BuildContext context) {
     OrgController controller = Get.find<OrgController>();
     controller.resetRepo();
-    // reset switch button index;
-    // get init post data
-    // return Placeholder();
 
     return Scaffold(
       appBar: AppBar(
@@ -41,58 +41,65 @@ class OrgScreen extends GetView<OrgController> {
         actions: [
           PopupMenuButton(
             onSelected: (value) {
-              switch(value){
+              switch (value) {
                 case 0:
-                  Get.put(ContentModerationController()).orgId.value = controller.org.orgId;
-                  Get.toNamed(RouteNames.contentModeration, arguments: ContentModerationController.postEnable);
+                  Get.put(ContentModerationController()).orgId.value =
+                      controller.org.orgId;
+                  Get.toNamed(RouteNames.contentModeration,
+                      arguments: ContentModerationController.postEnable);
                   break;
                 case 1:
-                  Get.put(ContentModerationController()).orgId.value = controller.org.orgId;
-                  Get.toNamed(RouteNames.contentModeration, arguments: ContentModerationController.eventEnable);
+                  Get.put(ContentModerationController()).orgId.value =
+                      controller.org.orgId;
+                  Get.toNamed(RouteNames.contentModeration,
+                      arguments: ContentModerationController.eventEnable);
                   break;
                 case 2:
+                  Get.put(ChangeGroupInfoController()).setOrg(controller.org);
                   showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true, // Full height
-                      builder: (context) => ChangeGroupInfoView(),
-                    );
+                    context: context,
+                    isScrollControlled: true, // Full height
+                    builder: (context) {
+                      return ChangeGroupInfoView();
+                    },
+                  );
                   break;
                 case 3:
                   showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true, // Full height
-                      builder: (context) => CreatePostView(org: controller.org),
-                    );
+                    context: context,
+                    isScrollControlled: true, // Full height
+                    builder: (context) => CreatePostView(org: controller.org),
+                  );
                   break;
                 case 4:
                   showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true, // Full height
-                      builder: (context) => CreateEventView(org: controller.org),
-                    );
+                    context: context,
+                    isScrollControlled: true, // Full height
+                    builder: (context) => CreateEventView(org: controller.org),
+                  );
                   break;
               }
             },
             itemBuilder: (context) {
               return [
                 PopupMenuItem(
-                  value: 0,
+                    value: 0,
                     child: const Text("Duyệt bài viết",
                         style: TextStyle(color: Colors.black))),
                 PopupMenuItem(
-                  value: 1,
+                    value: 1,
                     child: const Text("Duyệt sự kiện",
                         style: TextStyle(color: Colors.black))),
                 PopupMenuItem(
-                  value: 2,
+                    value: 2,
                     child: const Text("Chỉnh sửa thông tin",
                         style: TextStyle(color: Colors.black))),
                 PopupMenuItem(
-                  value: 3,
+                    value: 3,
                     child: const Text("Tạo bài viết",
                         style: TextStyle(color: Colors.black))),
                 PopupMenuItem(
-                  value: 4,
+                    value: 4,
                     child: const Text("Tạo sự kiện",
                         style: TextStyle(color: Colors.black))),
               ];
@@ -105,11 +112,16 @@ class OrgScreen extends GetView<OrgController> {
           // back ground
           Container(
             margin: EdgeInsets.all(10),
-            height: 120, 
+            height: 120,
             decoration: BoxDecoration(
               color: AppColors.outline,
             ),
-            child: Image.network(HttpUtil.mapUrl(controller.org.orgBackground), fit: BoxFit.cover,),
+            child: Image.network(
+              HttpUtil.mapUrl(controller.org.orgBackground),
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) =>
+                  Image(image: AssetImage("assets/images/empty.png"),),
+            ),
           ),
           // group name
           Padding(
@@ -117,10 +129,10 @@ class OrgScreen extends GetView<OrgController> {
             child: GestureDetector(
               onTap: () {
                 showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true, // Full height
-                      builder: (context) => ViewOrgInfoView(),
-                    );
+                  context: context,
+                  isScrollControlled: true, // Full height
+                  builder: (context) => ViewOrgInfoView(),
+                );
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -147,7 +159,7 @@ class OrgScreen extends GetView<OrgController> {
                   style: TextStyle(color: Colors.black, fontSize: 15),
                 )),
           ),
-      
+
           // Swtich button
           Obx(
             () => Container(
@@ -188,25 +200,23 @@ class OrgScreen extends GetView<OrgController> {
               ),
             ),
           ),
-      
+
           Obx(() => ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount:
-                controller.switchButtonIndex.value == controller.postIndex
-                    ? controller.posts.length
-                    : controller.events.length,
-            itemBuilder: (context, index) {
-              return controller.switchButtonIndex.value ==
-                      controller.postIndex
-                  ? PrivatePostView(post: controller.posts[index])
-                  : PrivateEventView(eventItem: controller.events[index]);
-            },
-          ))
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount:
+                    controller.switchButtonIndex.value == controller.postIndex
+                        ? controller.posts.length
+                        : controller.events.length,
+                itemBuilder: (context, index) {
+                  return controller.switchButtonIndex.value ==
+                          controller.postIndex
+                      ? PrivatePostView(post: controller.posts[index])
+                      : PrivateEventView(eventItem: controller.events[index]);
+                },
+              ))
         ],
       ),
     );
   }
 }
-
-
