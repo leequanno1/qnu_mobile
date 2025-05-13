@@ -23,7 +23,7 @@ class EventController extends GetxController {
       'Authorization': stateService.getToken()
     };
     // load all post
-    orgs.addAll(await _orgController.loadOrgList("4451190096"));
+    orgs.addAll(await _orgController.loadOrgList());
     dynamic rawPosts = await HttpUtil.post("/api/event/get_all",
         body: {
           "from": 0,

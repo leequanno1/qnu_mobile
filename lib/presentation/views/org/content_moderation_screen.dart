@@ -9,12 +9,12 @@ import 'package:qnu_mobile/presentation/views/org/private_event_view.dart';
 import 'package:qnu_mobile/presentation/views/org/private_post_view.dart';
 
 class ContentModerationScreen extends GetView<ContentModerationController> {
-  const ContentModerationScreen({super.key});
+  ContentModerationScreen({super.key});
+  final ContentModerationController _controller =
+        Get.find<ContentModerationController>();
 
   @override
   Widget build(BuildContext context) {
-    ContentModerationController controller =
-        Get.find<ContentModerationController>();
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -35,9 +35,9 @@ class ContentModerationScreen extends GetView<ContentModerationController> {
                     SizedBox(
                       width: (Get.width-30)/2,
                       child: ElevatedButton(
-                          onPressed: () => controller
+                          onPressed: () => _controller
                               .select(ContentModerationController.postEnable),
-                          style: controller.switchFlag.value ==
+                          style: _controller.switchFlag.value ==
                                   ContentModerationController.postEnable
                               ? switchButtonSeleted
                               : switchButtonUnseleted,
@@ -46,9 +46,9 @@ class ContentModerationScreen extends GetView<ContentModerationController> {
                     SizedBox(
                       width: (Get.width-30)/2,
                       child: ElevatedButton(
-                          onPressed: () => controller
+                          onPressed: () => _controller
                               .select(ContentModerationController.eventEnable),
-                          style: controller.switchFlag.value ==
+                          style: _controller.switchFlag.value ==
                                   ContentModerationController.eventEnable
                               ? switchButtonSeleted
                               : switchButtonUnseleted,
@@ -62,16 +62,16 @@ class ContentModerationScreen extends GetView<ContentModerationController> {
           // item list
           Expanded(
             child: Obx(() => ListView.builder(
-                  itemCount: controller.switchFlag.value ==
+                  itemCount: _controller.switchFlag.value ==
                           ContentModerationController.postEnable
-                      ? controller.posts.length
-                      : controller.event.length,
+                      ? _controller.posts.length
+                      : _controller.event.length,
                   itemBuilder: (context, index) {
-                    return controller.switchFlag.value ==
+                    return _controller.switchFlag.value ==
                             ContentModerationController.postEnable
-                        ? _PrivatePostView(controller.posts[index], controller)
+                        ? _PrivatePostView(_controller.posts[index], _controller)
                         : _PrivateEventView(
-                            controller.event[index], controller);
+                            _controller.event[index], _controller);
                   },
                 )),
           )

@@ -32,7 +32,7 @@ class AppPages {
     // content moderation
     GetPage(
       name: RouteNames.contentModeration, 
-      page: () => const ContentModerationScreen(),
+      page: () => ContentModerationScreen(),
       binding: ContentModerationBiding(),
     ),
 

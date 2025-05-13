@@ -20,8 +20,8 @@ class AuthentController extends GetxController {
         },
       ), (json) => Token.fromJson(json));
       print(response.data.token);
-      Get.find<StateService>().setAuthenticated(true,response.data.token);
-      await Get.put(OrgController()).loadOrgList("4451190096");
+      await Get.find<StateService>().setAuthenticated(true,response.data.token);
+      await Get.put(OrgController()).loadOrgList();
       Get.toNamed(RouteNames.splash);
     } catch (e) {
       print(e);

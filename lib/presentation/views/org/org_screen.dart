@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -7,6 +5,7 @@ import 'package:qnu_mobile/assets/app_color.dart';
 import 'package:qnu_mobile/controller/org/change_group_info_controller.dart';
 import 'package:qnu_mobile/controller/org/content_moderation_controller.dart';
 import 'package:qnu_mobile/controller/org/org_controller.dart';
+import 'package:qnu_mobile/data/services/state_service.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
 import 'package:qnu_mobile/presentation/views/org/change_group_info_view.dart';
 import 'package:qnu_mobile/presentation/views/org/create_event_view.dart';
@@ -43,16 +42,12 @@ class OrgScreen extends GetView<OrgController> {
             onSelected: (value) {
               switch (value) {
                 case 0:
-                  Get.put(ContentModerationController()).orgId.value =
-                      controller.org.orgId;
                   Get.toNamed(RouteNames.contentModeration,
-                      arguments: ContentModerationController.postEnable);
+                      arguments: [ContentModerationController.postEnable,controller.org.orgId]);
                   break;
                 case 1:
-                  Get.put(ContentModerationController()).orgId.value =
-                      controller.org.orgId;
                   Get.toNamed(RouteNames.contentModeration,
-                      arguments: ContentModerationController.eventEnable);
+                      arguments: [ContentModerationController.eventEnable,controller.org.orgId]);
                   break;
                 case 2:
                   Get.put(ChangeGroupInfoController()).setOrg(controller.org);
@@ -83,13 +78,15 @@ class OrgScreen extends GetView<OrgController> {
             itemBuilder: (context) {
               return [
                 PopupMenuItem(
+                    enabled: controller.isAdmin.value,
                     value: 0,
-                    child: const Text("Duyệt bài viết",
-                        style: TextStyle(color: Colors.black))),
+                    child: Text("Duyệt bài viết",
+                        style: TextStyle(color: controller.isAdmin.value ?Colors.black: AppColors.disableButton))),
                 PopupMenuItem(
+                    enabled: controller.isAdmin.value,
                     value: 1,
-                    child: const Text("Duyệt sự kiện",
-                        style: TextStyle(color: Colors.black))),
+                    child: Text("Duyệt sự kiện",
+                        style: TextStyle(color: controller.isAdmin.value ?Colors.black: AppColors.disableButton))),
                 PopupMenuItem(
                     value: 2,
                     child: const Text("Chỉnh sửa thông tin",

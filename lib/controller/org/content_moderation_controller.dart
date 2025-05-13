@@ -26,8 +26,9 @@ class ContentModerationController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    int selectValue = Get.arguments as int;
-    select(selectValue);
+    List arguments = Get.arguments as List;
+    select(arguments[0] as int);
+    orgId.value = arguments[1] as String;
   }
 
   Future<void> select(int selectValue) async {

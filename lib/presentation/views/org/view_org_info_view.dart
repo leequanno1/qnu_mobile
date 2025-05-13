@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
+import 'package:qnu_mobile/controller/org/org_controller.dart';
 
 class ViewOrgInfoView extends StatelessWidget {
-  const ViewOrgInfoView({super.key});
+  ViewOrgInfoView({super.key});
+  final OrgController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class ViewOrgInfoView extends StatelessWidget {
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
                       ),
-                      Text("Tên nhóm",
+                      Text(_controller.org.orgName,
                           style: TextStyle(color: Colors.black, fontSize: 18)),
                     ],
                   ),
@@ -60,9 +62,12 @@ class ViewOrgInfoView extends StatelessWidget {
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          "Mô tả nhóm",
-                          style: TextStyle(color: Colors.black, fontSize: 18),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            _controller.org.orgDescription,
+                            style: TextStyle(color: Colors.black, fontSize: 18),
+                          ),
                         )
                       ],
                     ),
@@ -74,7 +79,7 @@ class ViewOrgInfoView extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _labelContent("Số lượng thành viên", "10 thành viên."),
+                      _labelContent("Số lượng thành viên", "${_controller.org.members} thành viên."),
                       GestureDetector(
                         child: Text("See all", style: TextStyle(color: AppColors.primary),),
                       )
@@ -84,12 +89,12 @@ class ViewOrgInfoView extends StatelessWidget {
                 // số lượng bài viết
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                  child: _labelContent("Số lượng bài viết", "10 bài viết."),
+                  child: _labelContent("Số lượng bài viết", "${_controller.org.posts} bài viết."),
                 ),
                 // số lượng sự kiện
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                  child: _labelContent("Số lượng sự kiện", "10 sự kiện."),
+                  child: _labelContent("Số lượng sự kiện", "${_controller.org.events} sự kiện."),
                 ),
               ],
             ),

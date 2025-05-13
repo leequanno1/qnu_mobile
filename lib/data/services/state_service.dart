@@ -5,6 +5,7 @@ import 'package:qnu_mobile/data/dto/student_user_info.dart';
 import 'package:qnu_mobile/data/dto/user_info.dart';
 import 'package:qnu_mobile/data/services/user_type.dart';
 import 'package:qnu_mobile/utils/http_ultil.dart';
+import 'dart:convert';
 
 class StateService extends GetxService {
 
@@ -20,10 +21,11 @@ class StateService extends GetxService {
   Future<void> setAuthenticated(bool value, String token) async {
     _isAuthenticated.value = value;
     _token = token;
+    String tempId = extractSubFromJwt(token)??"";
     //get userType
     CustomResponse<List<UserInfo>> response = CustomResponse.convert(
       await HttpUtil.post("/api/user/get_user_info", body: {
-        "userIds": ["4451190096"]
+        "userIds": [tempId]
       }, headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -78,5 +80,26 @@ class StateService extends GetxService {
       (json) => StaffUserInfo.fromJson(json),
     );
     return response.data;
+  }
+
+  String? extractSubFromJwt(String token) {
+    try {
+      final parts = token.split('.');
+      if (parts.length != 3) {
+        throw FormatException('Invalid JWT');
+      }
+
+      final payload = parts[1];
+      final normalized = base64.normalize(payload);
+      final decoded = utf8.decode(base64Url.decode(normalized));
+      final payloadMap = json.decode(decoded);
+
+      if (payloadMap is! Map<String, dynamic>) {
+        throw FormatException('Invalid payload');
+      }
+      return payloadMap['sub'];
+    } catch (e) {
+      return null;
+    }
   }
 }
