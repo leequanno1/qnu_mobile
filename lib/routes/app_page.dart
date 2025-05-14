@@ -38,7 +38,7 @@ class AppPages {
 
     GetPage(
       name: RouteNames.login, 
-      page: () => const LoginView(),
+      page: () => LoginView(),
       binding: LoginBiding(),
     ),
 

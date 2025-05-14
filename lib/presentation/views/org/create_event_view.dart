@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
-import 'package:qnu_mobile/controller/org/date_time_picker_controller.dart';
 import 'package:qnu_mobile/controller/image_picker_controller.dart';
 import 'package:qnu_mobile/controller/org/create_event_controller.dart';
 import 'package:qnu_mobile/models/org.dart';
@@ -10,16 +9,16 @@ import 'package:qnu_mobile/utils/date_time_format.dart';
 
 class CreateEventView extends StatelessWidget {
   final Org org;
-  const CreateEventView({super.key, required this.org});
+  final String memberId;
+  CreateEventView({super.key, required this.org, required this.memberId});
+
+  final ImagePickerController imgController =
+        Get.put(ImagePickerController());
+  final CreateEventController controller =
+        Get.put(CreateEventController());
 
   @override
   Widget build(BuildContext context) {
-    final ImagePickerController imgController =
-        Get.put(ImagePickerController());
-    final CreateEventController controller =
-        Get.put(CreateEventController());
-    final DateTimePickerController dateController =
-        Get.put(DateTimePickerController());
     return DraggableScrollableSheet(
       initialChildSize: 1,
       minChildSize: .9,
@@ -37,7 +36,7 @@ class CreateEventView extends StatelessWidget {
                       Get.back();
                       imgController.clearImages();
                       controller.inputReset();
-                      dateController.dataReset();
+                      controller.dateController.dataReset();
                     },
                     icon: Icon(
                       PhosphorIconsBold.caretLeft,
@@ -52,7 +51,7 @@ class CreateEventView extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 10),
                     child: ElevatedButton(
                         onPressed: () {
-                          controller.submitForm();
+                          controller.submitForm(memberId);
                         },
                         child: Text("Đăng")),
                   )
@@ -90,7 +89,7 @@ class CreateEventView extends StatelessWidget {
                         Expanded(
                           child: GestureDetector(
                             onTap: () async {
-                              dateController.selectStartTime(context);
+                              controller.dateController.selectStartTime(context);
                             },
                             child: Container(
                               alignment: AlignmentDirectional.center,
@@ -102,9 +101,9 @@ class CreateEventView extends StatelessWidget {
                                       BorderRadius.all(Radius.circular(5))),
                               child: Obx(
                                 () => Text(
-                                  dateController.startTime.value == null
+                                  controller.dateController.startTime.value == null
                                       ? "Bắt đầu"
-                                      : DateTimeFormat.toDateTime(dateController.startTime.value),
+                                      : DateTimeFormat.toDateTime(controller.dateController.startTime.value),
                                   style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold, fontSize: 18),
                                 ),
                               ),
@@ -114,7 +113,7 @@ class CreateEventView extends StatelessWidget {
                         Expanded(
                           child: GestureDetector(
                             onTap: () async {
-                              dateController.selectEndTime(context);
+                              controller.dateController.selectEndTime(context);
                             },
                             child: Container(
                               height: 50,
@@ -125,9 +124,9 @@ class CreateEventView extends StatelessWidget {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(5))),
                               child: Obx(() => Text(
-                                dateController.endTime.value == null
+                                controller.dateController.endTime.value == null
                                       ? "Kết thúc"
-                                      : DateTimeFormat.toDateTime(dateController.endTime.value),
+                                      : DateTimeFormat.toDateTime(controller.dateController.endTime.value),
                                 style: TextStyle(color: AppColors.textRed, fontWeight: FontWeight.bold, fontSize: 18),
                               ),),
                             ),
@@ -197,7 +196,7 @@ class CreateEventView extends StatelessWidget {
                                         maxWidth:
                                             200, // Giới hạn chiều rộng tối đa
                                       ),
-                                      child: Image.file(images[index]),
+                                      child: Image.file(images[index], fit: BoxFit.fitHeight,),
                                     ),
                                   );
                                 },

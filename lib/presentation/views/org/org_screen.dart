@@ -5,7 +5,6 @@ import 'package:qnu_mobile/assets/app_color.dart';
 import 'package:qnu_mobile/controller/org/change_group_info_controller.dart';
 import 'package:qnu_mobile/controller/org/content_moderation_controller.dart';
 import 'package:qnu_mobile/controller/org/org_controller.dart';
-import 'package:qnu_mobile/data/services/state_service.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
 import 'package:qnu_mobile/presentation/views/org/change_group_info_view.dart';
 import 'package:qnu_mobile/presentation/views/org/create_event_view.dart';
@@ -63,14 +62,14 @@ class OrgScreen extends GetView<OrgController> {
                   showModalBottomSheet(
                     context: context,
                     isScrollControlled: true, // Full height
-                    builder: (context) => CreatePostView(org: controller.org),
+                    builder: (context) => CreatePostView(org: controller.org, memberId: controller.memberInfo.memberId,),
                   );
                   break;
                 case 4:
                   showModalBottomSheet(
                     context: context,
                     isScrollControlled: true, // Full height
-                    builder: (context) => CreateEventView(org: controller.org),
+                    builder: (context) => CreateEventView(org: controller.org, memberId: controller.memberInfo.memberId,),
                   );
                   break;
               }

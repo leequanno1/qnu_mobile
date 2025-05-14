@@ -15,7 +15,7 @@ class PostView extends GetView<PostController> {
   @override
   Widget build(BuildContext context) {
     PostController controller = Get.find();
-    controller.posts.clear();
+    // controller.posts.clear();
     controller.loadPost();
     return Container(
       decoration: BoxDecoration(color: AppColors.background),

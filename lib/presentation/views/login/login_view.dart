@@ -6,11 +6,12 @@ import 'package:qnu_mobile/presentation/styles/button_style.dart';
 import 'package:qnu_mobile/routes/route_name.dart';
 
 class LoginView extends StatelessWidget {
-  const LoginView({super.key});
+  LoginView({super.key});
+  final AuthentController auController = Get.find<AuthentController>();
 
   @override
   Widget build(BuildContext context) {
-    AuthentController auController = Get.find<AuthentController>();
+    auController.checkAuthStatus();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SafeArea(

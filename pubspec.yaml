@@ -41,6 +41,10 @@ dependencies:
   stylish_bottom_bar: ^1.1.0
   phosphor_flutter: ^2.1.0
   image_picker: ^1.1.2
+  fluttertoast: ^8.2.12
+  http_parser: ^4.1.2
+  path: ^1.9.0
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

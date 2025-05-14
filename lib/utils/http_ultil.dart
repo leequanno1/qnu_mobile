@@ -11,16 +11,17 @@ class HttpUtil {
   /// GET request
   static Future<dynamic> get(String url, {Map<String, String>? headers}) async {
     final response = await http.get(
-      Uri.parse(baseURL+url),
+      Uri.parse(baseURL + url),
       headers: headers ?? _defaultHeaders,
     );
     return _handleResponse(response);
   }
 
   /// POST request
-  static Future<dynamic> post(String url, {dynamic body, Map<String, String>? headers}) async {
+  static Future<dynamic> post(String url,
+      {dynamic body, Map<String, String>? headers}) async {
     final response = await http.post(
-      Uri.parse(baseURL+url),
+      Uri.parse(baseURL + url),
       headers: headers ?? _defaultHeaders,
       body: jsonEncode(body),
     );
@@ -28,9 +29,10 @@ class HttpUtil {
   }
 
   /// PUT request
-  static Future<dynamic> put(String url, {dynamic body, Map<String, String>? headers}) async {
+  static Future<dynamic> put(String url,
+      {dynamic body, Map<String, String>? headers}) async {
     final response = await http.put(
-      Uri.parse(baseURL+url),
+      Uri.parse(baseURL + url),
       headers: headers ?? _defaultHeaders,
       body: jsonEncode(body),
     );
@@ -38,8 +40,9 @@ class HttpUtil {
   }
 
   /// DELETE request
-  static Future<dynamic> delete(String url, {dynamic body, Map<String, String>? headers}) async {
-    final request = http.Request("DELETE", Uri.parse(baseURL+url));
+  static Future<dynamic> delete(String url,
+      {dynamic body, Map<String, String>? headers}) async {
+    final request = http.Request("DELETE", Uri.parse(baseURL + url));
     request.headers.addAll(headers ?? _defaultHeaders);
     if (body != null) {
       request.body = jsonEncode(body);
@@ -48,6 +51,22 @@ class HttpUtil {
     final response = await request.send();
     final responseBody = await response.stream.bytesToString();
     return _handleRawResponse(response.statusCode, responseBody);
+  }
+
+  static Future<dynamic> putFormData(
+    String url, {
+    Map<String, String>? fields,
+    List<http.MultipartFile>? files,
+    Map<String, String>? headers,
+  }) async {
+    final request = http.MultipartRequest('PUT', Uri.parse(baseURL + url));
+    request.headers.addAll(headers ?? {});
+    if (fields != null) request.fields.addAll(fields);
+    if (files != null) request.files.addAll(files);
+
+    final streamedResponse = await request.send();
+    final responseBody = await streamedResponse.stream.bytesToString();
+    return _handleRawResponse(streamedResponse.statusCode, responseBody);
   }
 
   /// Handle response for GET/POST/PUT
@@ -68,8 +87,8 @@ class HttpUtil {
     }
   }
 
-  static String mapUrl(String url){
-    if(!url.startsWith("/")) return "$baseURL/$url";
+  static String mapUrl(String url) {
+    if (!url.startsWith("/")) return "$baseURL/$url";
     return "$baseURL$url";
   }
 }

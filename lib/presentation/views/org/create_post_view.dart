@@ -8,7 +8,8 @@ import 'package:qnu_mobile/models/org.dart';
 
 class CreatePostView extends StatelessWidget {
   final Org org;
-  const CreatePostView({super.key, required this.org});
+  final String memberId;
+  const CreatePostView({super.key, required this.org, required this.memberId});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,7 @@ class CreatePostView extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 10),
                     child: ElevatedButton(
                         onPressed: () {
-                          controller.submitForm();
+                          controller.submitForm(memberId);
                         },
                         child: Text("Đăng")),
                   )
@@ -134,7 +135,7 @@ class CreatePostView extends StatelessWidget {
                                         maxWidth:
                                             200, // Giới hạn chiều rộng tối đa
                                       ),
-                                      child: Image.file(images[index]),
+                                      child: Image.file(images[index], fit: BoxFit.cover,),
                                     ),
                                   );
                                 },

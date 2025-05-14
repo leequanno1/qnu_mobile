@@ -32,6 +32,7 @@ class DateTimePickerController extends GetxController {
 
     final time = await showTimePicker(
       initialTime: TimeOfDay.now(),
+      // ignore: use_build_context_synchronously
       context: context,
       builder: (BuildContext context, Widget? child) {
         return Theme(

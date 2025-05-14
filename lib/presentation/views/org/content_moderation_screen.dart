@@ -7,6 +7,7 @@ import 'package:qnu_mobile/models/post.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
 import 'package:qnu_mobile/presentation/views/org/private_event_view.dart';
 import 'package:qnu_mobile/presentation/views/org/private_post_view.dart';
+import 'package:qnu_mobile/utils/toast_ultil.dart';
 
 class ContentModerationScreen extends GetView<ContentModerationController> {
   ContentModerationScreen({super.key});
@@ -95,7 +96,11 @@ class ContentModerationScreen extends GetView<ContentModerationController> {
                 SizedBox(
                     width: 100,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          // call API loại
+                          controller.posts.remove(post);
+                          ToastUltil.showToast("Loại thành công bài viết của ${post.memberInfo.displayName}");
+                        },
                         style: redBackgroundButton,
                         child: Text("Loại", style: TextStyle(fontWeight: FontWeight.normal)))),
                 SizedBox(
@@ -104,7 +109,11 @@ class ContentModerationScreen extends GetView<ContentModerationController> {
                 SizedBox(
                     width: 100,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          // call API duyệt
+                          controller.posts.remove(post);
+                          ToastUltil.showToast("Duyệt thành công bài viết của ${post.memberInfo.displayName}");
+                        },
                         style: buttonPrimary,
                         child: Text("Duyệt", style: TextStyle(fontWeight: FontWeight.normal),),)),
               ],
@@ -131,7 +140,11 @@ class ContentModerationScreen extends GetView<ContentModerationController> {
                 SizedBox(
                     width: 100,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          //call API loại
+                          controller.event.remove(event);
+                          ToastUltil.showToast("Loại thành công sự kiện của ${event.memberInfo.displayName}");
+                        },
                         style: redBackgroundButton,
                         child: Text("Loại", style: TextStyle(fontWeight: FontWeight.normal)))),
                 SizedBox(
@@ -140,7 +153,11 @@ class ContentModerationScreen extends GetView<ContentModerationController> {
                 SizedBox(
                     width: 100,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          //call API duyệt
+                          controller.event.remove(event);
+                          ToastUltil.showToast("Duyệt thành công sự kiện của ${event.memberInfo.displayName}");
+                        },
                         style: buttonPrimary,
                         child: Text("Duyệt", style: TextStyle(fontWeight: FontWeight.normal)))),
               ],

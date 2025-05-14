@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qnu_mobile/controller/main/event_controller.dart';
+import 'package:qnu_mobile/controller/main/post_controller.dart';
 import 'package:qnu_mobile/presentation/views/main/event_view.dart';
 import 'package:qnu_mobile/presentation/views/main/post_view.dart';
 import 'package:qnu_mobile/presentation/views/main/profile_view.dart';
@@ -16,7 +18,7 @@ class MainLayoutController extends GetxController {
     // Event
     const EventView(),
     // Profile
-    const ProfileView(),
+    ProfileView(),
   ];
 
   final List<AppBar> appBars = [
@@ -38,5 +40,15 @@ class MainLayoutController extends GetxController {
 
   void changeScreen(int index) {
     selectedIndex.value = index;
+    switch (index) {
+      case 0:
+        // reload Post
+        Get.find<PostController>().loadPost();
+        break;
+      case 1:
+        // reload Event
+        Get.find<EventController>().loadEvent();
+        break;
+    }
   }
 }

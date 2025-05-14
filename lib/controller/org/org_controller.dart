@@ -17,6 +17,7 @@ class OrgController extends GetxController {
   final RxList<Event> _events = RxList.empty();
   final RxMap<String, Org> _orgList = RxMap({});
   late Org _org;
+  late MemberInfo memberInfo;
   final StateService stateService = Get.find<StateService>();
 
   int get postIndex => 1;
@@ -34,11 +35,17 @@ class OrgController extends GetxController {
     EventController eventController = Get.put(EventController());
     _posts.value = await postController.loadPostByOrgId(org.orgId);
     _events.value = await eventController.loadEventByOrgId(org.orgId);
-    isAdmin.value = (await getMemberInfoByOrgIdAndUserId(stateService.userInfo.value!.userId, _org.orgId)).roleLevel == 2;
+    memberInfo = (await getMemberInfoByOrgIdAndUserId(stateService.userInfo.value!.userId, _org.orgId));
+    isAdmin.value = memberInfo.roleLevel == 2;
   }
 
-  void switchButtonTap(int switchIndex) {
+  void switchButtonTap(int switchIndex) async {
     _switchButtonIndex.value = switchIndex;
+    if(switchIndex == 0){
+      _posts.value = await Get.find<PostController>().loadPostByOrgId(org.orgId);
+    } else {
+      _events.value = await Get.find<EventController>().loadEventByOrgId(org.orgId);
+    }
   }
 
   Future<Map<String,Org>> loadOrgList() async {

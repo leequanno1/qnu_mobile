@@ -1,12 +1,12 @@
 class StaffUserInfo {
   final String userId;
-  final String displayName;
-  final String fullName;
-  final String userAvatar;
-  final String userBackground;
-  final String departmentId;
-  final String depName;
-  final String phoneNumber;
+  String displayName;
+  String fullName;
+  String userAvatar;
+  String userBackground;
+  String departmentId;
+  String depName;
+  String phoneNumber;
 
   StaffUserInfo({
     required this.userId,

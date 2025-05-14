@@ -1,15 +1,15 @@
 class StudentUserInfo {
-  final String userId;
-  final String displayName;
-  final String fullName;
-  final String userAvatar;
-  final String userBackground;
-  final String majorId;
-  final String majorName;
-  final String departmentId;
-  final String depName;
-  final String courseNumber;
-  final String phoneNumber;
+  String userId;
+  String displayName;
+  String fullName;
+  String userAvatar;
+  String userBackground;
+  String majorId;
+  String majorName;
+  String departmentId;
+  String depName;
+  String courseNumber;
+  String phoneNumber;
 
   StudentUserInfo({
     required this.userId,

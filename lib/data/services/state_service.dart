@@ -11,6 +11,7 @@ class StateService extends GetxService {
 
   final _isAuthenticated = false.obs;
   String _token = "";
+  String get token => _token;
   Rx<UserInfo?> userInfo = Rx(null);
 
   final Rx<StudentUserInfo?> studentInfo = Rx(null);
@@ -39,10 +40,8 @@ class StateService extends GetxService {
     if(userInfo.value?.userType == UserType.STUDENT){
       // get student info;
       studentInfo.value = await getStudentUserInfo();
-      print(studentInfo.value?.fullName);
     } else {
       staffInfo.value = await getStaffUserInfo();
-      print(staffInfo.value?.fullName);
     }
   }
 

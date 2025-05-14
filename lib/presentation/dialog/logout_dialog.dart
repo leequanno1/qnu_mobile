@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/get.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
+import 'package:qnu_mobile/controller/main/main_layout_controller.dart';
 import 'package:qnu_mobile/presentation/dialog/custom_diaglog.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
+import 'package:qnu_mobile/routes/route_name.dart';
 
 class LogoutDialog implements CustomDiaglog {
   static LogoutDialog instance =  LogoutDialog();
@@ -26,8 +28,13 @@ class LogoutDialog implements CustomDiaglog {
                   mainAxisAlignment: MainAxisAlignment.end,
                   spacing: 10,
                   children: [
-                    SizedBox(width: 110, child: ElevatedButton(onPressed: () {Navigator.of(context).pop();}, style: buttonSecondary, child: Text("Hủy", style: TextStyle(fontWeight: FontWeight.normal),))),
-                    SizedBox(width: 120, child: ElevatedButton(onPressed: () {}, style: redBackgroundButton, child: Text("Đăng xuất", style: TextStyle(fontWeight: FontWeight.normal),))),
+                    SizedBox(width: 110, child: ElevatedButton(onPressed: () {
+                      Navigator.of(context).pop();
+                    }, style: buttonSecondary, child: Text("Hủy", style: TextStyle(fontWeight: FontWeight.normal),))),
+                    SizedBox(width: 120, child: ElevatedButton(onPressed: () async {
+                      Get.offNamed(RouteNames.login);
+                      Get.find<MainLayoutController>().changeScreen(0);
+                    }, style: redBackgroundButton, child: Text("Đăng xuất", style: TextStyle(fontWeight: FontWeight.normal),))),
                   ],
                 )
               ],

@@ -27,15 +27,15 @@ class ContentModerationController extends GetxController {
   void onInit() {
     super.onInit();
     List arguments = Get.arguments as List;
-    select(arguments[0] as int);
     orgId.value = arguments[1] as String;
+    select(arguments[0] as int);
   }
 
   Future<void> select(int selectValue) async {
     _switchFlag.value = selectValue;
     switch (selectValue) {
       case postEnable:
-        await _loadPosts();
+        _loadPosts();
         break;
       case eventEnable:
         _loadEvents();
