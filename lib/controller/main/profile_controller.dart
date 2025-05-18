@@ -14,14 +14,34 @@ class ProfileController extends GetxController {
   @override 
   void onInit() async {
     super.onInit();
+    print('✅ MyController onInit');
     if(stateService.userInfo.value?.userType == UserType.STUDENT){
       // load student
       await _loadStudent();
+      // studentUserInfo.value = stateService.studentInfo.value;
     } else {
       // load staff
       await _loadStaff();
+      // staffUserInfo.value = stateService.staffInfo.value;
     }
   }
+
+  // @override 
+  // void onInit() {
+  //   print('✅ MyController onInit');
+  // }
+
+  // Future<void> resetController() async {
+  //   if(stateService.userInfo.value?.userType == UserType.STUDENT){
+  //     // load student
+  //     await _loadStudent();
+  //     // studentUserInfo.value = stateService.studentInfo.value;
+  //   } else {
+  //     // load staff
+  //     await _loadStaff();
+  //     // staffUserInfo.value = stateService.staffInfo.value;
+  //   }
+  // }
 
   Future<void> _loadStudent() async {
     var headerPair = {

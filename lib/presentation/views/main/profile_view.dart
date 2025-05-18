@@ -11,19 +11,20 @@ import 'package:qnu_mobile/presentation/styles/button_style.dart';
 import 'package:qnu_mobile/utils/http_ultil.dart';
 
 class ProfileView extends GetView<ProfileController> {
-  ProfileView({super.key});
-  final bool isStaff = Get.find<StateService>().userInfo.value?.userType != UserType.STUDENT;
-  final ProfileController _controller = Get.find();
-  final StateService stateService = Get.find();
+  const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    final ProfileController controller = Get.find();
+    final StateService stateService = Get.find();
+    
+    final bool isStaff = stateService.userInfo.value?.userType != UserType.STUDENT;
+    return Obx(() => SizedBox(
       width: double.maxFinite,
       child: isStaff? 
-      _StaffCard(staffUserInfo: _controller.staffUserInfo.value!, email: stateService.userInfo.value!.emailAddress, ) : 
-      _StudentCard(studentUserInfo: _controller.studentUserInfo.value!,email: stateService.userInfo.value!.emailAddress, ),
-    );
+      _StaffCard(staffUserInfo: controller.staffUserInfo.value!, email: stateService.userInfo.value!.emailAddress, ) : 
+      _StudentCard(studentUserInfo: controller.studentUserInfo.value!,email: stateService.userInfo.value!.emailAddress, ),
+    ),);
   }
 }
 

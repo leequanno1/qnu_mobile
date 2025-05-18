@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qnu_mobile/controller/main/profile_controller.dart';
 import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/data/dto/custom_response.dart';
 import 'package:qnu_mobile/data/dto/token.dart';
@@ -26,6 +27,7 @@ class AuthentController extends GetxController {
       print(response.data.token);
       await stateService.setAuthenticated(true, response.data.token);
       await Get.put(OrgController()).loadOrgList();
+      // await Get.put(ProfileController()).resetController();
       Get.offNamed(RouteNames.splash);
     } catch (e) {
       print(e);

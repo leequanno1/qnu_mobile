@@ -8,6 +8,6 @@ class MainLayoutBiding extends Bindings {
   void dependencies() {
     Get.lazyPut(() => PostController());
     Get.lazyPut(() => EventController());
-    Get.lazyPut(() => ProfileController());
+    Get.put(ProfileController());
   }
 }

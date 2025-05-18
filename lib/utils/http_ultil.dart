@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class HttpUtil {
-  static final String baseURL = "http://192.168.1.225:8080";
+  static final String baseURL = "http://192.168.1.149:8080";
   static final Map<String, String> _defaultHeaders = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',

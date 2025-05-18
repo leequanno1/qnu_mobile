@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
 import 'package:qnu_mobile/controller/main/main_layout_controller.dart';
+import 'package:qnu_mobile/controller/main/profile_controller.dart';
 import 'package:qnu_mobile/presentation/dialog/custom_diaglog.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
 import 'package:qnu_mobile/routes/route_name.dart';
@@ -34,6 +35,7 @@ class LogoutDialog implements CustomDiaglog {
                     SizedBox(width: 120, child: ElevatedButton(onPressed: () async {
                       Get.offNamed(RouteNames.login);
                       Get.find<MainLayoutController>().changeScreen(0);
+                      Get.delete<ProfileController>();
                     }, style: redBackgroundButton, child: Text("Đăng xuất", style: TextStyle(fontWeight: FontWeight.normal),))),
                   ],
                 )
