@@ -12,6 +12,8 @@ import 'package:qnu_mobile/presentation/wigets/drawer_widget.dart';
 
 class MainLayoutController extends GetxController {
 
+
+
   final List<Widget> screens = [
     // Post
     const PostView(),
@@ -21,14 +23,26 @@ class MainLayoutController extends GetxController {
     ProfileView(),
   ];
 
-  final List<AppBar> appBars = [
-    // Post
-    PostAppbar.getAppBar(),
-    // Event
-    EventAppbar.getAppBar(),
-    // Profile
-    ProfileAppbar.getAppBar(),
-  ];
+  // final List<AppBar> appBars = [
+  //   // Post
+  //   PostAppbar.getAppBar(),
+  //   // Event
+  //   EventAppbar.getAppBar(),
+  //   // Profile
+  //   ProfileAppbar.getAppBar(),
+  // ];
+
+  AppBar getAppBar(BuildContext context, index) {
+    switch (index) {
+      case 0:
+        return PostAppbar.getAppBar();
+      case 1:
+        return EventAppbar.getAppBar();
+      case 2: 
+        return ProfileAppbar.getAppBar(context);
+    }
+    return AppBar();
+  }
 
   final List<Widget?> drawers = [
     DrawerWidget.getDrawer(),

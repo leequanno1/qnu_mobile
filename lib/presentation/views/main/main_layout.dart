@@ -11,7 +11,8 @@ class MainLayout extends GetView<MainLayoutController> {
     Get.put(MainLayoutController());
     return Obx(() => Scaffold(
           drawer: controller.drawers[controller.selectedIndex.value],
-          appBar: controller.appBars[controller.selectedIndex.value],
+          appBar: controller.getAppBar(context, controller.selectedIndex.value),
+          // appBar: controller.appBars[controller.selectedIndex.value],
           body: SafeArea(
             child: Obx(() => Container(
                   color: const Color(0xFFF2F4F7),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:qnu_mobile/controller/main/profile_controller.dart';
 import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/data/dto/custom_response.dart';
 import 'package:qnu_mobile/data/dto/token.dart';

@@ -136,12 +136,15 @@ class _StudentCard extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.topCenter,
                 children: [
-                  Container(
-                    height: 140,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(9),
+                    child: Container(
+                      height: 140,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                      ),
+                      child: Image.network(HttpUtil.mapUrl(studentUserInfo.userBackground), fit: BoxFit.cover, errorBuilder: (context, error, stackTrace) => Image(image: AssetImage("assets/images/empty.png"), fit: BoxFit.cover,),),
                     ),
                   ),
                   Positioned(
@@ -149,9 +152,12 @@ class _StudentCard extends StatelessWidget {
                     left: 15,
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundColor: Colors.white,
-                      child: CircleAvatar(
-                        radius: 49,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(49),
+                        child: SizedBox(
+                          height: 98,
+                          width: 98,
+                          child: Image.network(HttpUtil.mapUrl(studentUserInfo.userAvatar), fit: BoxFit.cover, errorBuilder: (context, error, stackTrace) => Image(image: AssetImage("assets/images/empty.png"), fit: BoxFit.cover,),)),
                       ),
                     ),
                   ),
@@ -159,7 +165,7 @@ class _StudentCard extends StatelessWidget {
                     left: 120,
                     bottom: 15,
                     child: Text(
-                      'Student Name',
+                      studentUserInfo.displayName,
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -171,7 +177,7 @@ class _StudentCard extends StatelessWidget {
             ),
             SizedBox(height: 10),
             // Staff Details
-            _buildDetailRow('Họ và tên:', studentUserInfo.displayName),
+            _buildDetailRow('Họ và tên:', studentUserInfo.fullName),
             _buildDetailRow('Ngành học:', studentUserInfo.majorName),
             _buildDetailRow('Khoa:', studentUserInfo.depName),
             _buildDetailRow('Liên hệ:', studentUserInfo.phoneNumber),

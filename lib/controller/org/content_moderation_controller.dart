@@ -16,6 +16,7 @@ class ContentModerationController extends GetxController {
   final RxList<Event> _event = RxList.empty();
   final RxMap<String, MemberInfo> _members = RxMap();
   final StateService stateService = Get.find<StateService>();
+  late String adminId;
 
   static const int postEnable = 0;
   static const int eventEnable = 1;
@@ -29,6 +30,7 @@ class ContentModerationController extends GetxController {
     List arguments = Get.arguments as List;
     orgId.value = arguments[1] as String;
     select(arguments[0] as int);
+    adminId = arguments[2] as String;
   }
 
   Future<void> select(int selectValue) async {
@@ -50,7 +52,11 @@ class ContentModerationController extends GetxController {
       'Authorization': stateService.getToken()
     };
     var rawResponse = await HttpUtil.post("/api/post/get_not_approved_in_org",
-        body: {"orgId": orgId.value, "offset":{"from": 0, "to": 1000}}, headers: headerPair);
+        body: {
+          "orgId": orgId.value,
+          "offset": {"from": 0, "to": 1000}
+        },
+        headers: headerPair);
 
     CustomResponse<List<PostDto>> postResponses = CustomResponse.convert(
       rawResponse,
@@ -76,7 +82,11 @@ class ContentModerationController extends GetxController {
       'Authorization': stateService.getToken()
     };
     var rawResponse = await HttpUtil.post("/api/event/get_not_approved_in_org",
-        body: {"orgId": orgId.value, "offset":{"from": 0, "to": 1000}}, headers: headerPair);
+        body: {
+          "orgId": orgId.value,
+          "offset": {"from": 0, "to": 1000}
+        },
+        headers: headerPair);
 
     CustomResponse<List<EventDto>> postResponses = CustomResponse.convert(
       rawResponse,
@@ -95,17 +105,63 @@ class ContentModerationController extends GetxController {
     }
   }
 
-
-  Future<void> handleGetMemberInfo(Set<String> memberIds, Map<String, String> headerPair) async {
-    dynamic rawMemInfo = await HttpUtil.post("/api/member/get_member_info", body: {'memberIds': memberIds.toList()}, headers: headerPair);
-    CustomResponse<List<MemberInfo>> memberInfoResponses = CustomResponse.convert(rawMemInfo, 
-      (data) => (data as List)
-      .map((item) => MemberInfo.fromJson(item as Map<String, dynamic>))
-      .toList()
-    );
+  Future<void> handleGetMemberInfo(
+      Set<String> memberIds, Map<String, String> headerPair) async {
+    dynamic rawMemInfo = await HttpUtil.post("/api/member/get_member_info",
+        body: {'memberIds': memberIds.toList()}, headers: headerPair);
+    CustomResponse<List<MemberInfo>> memberInfoResponses =
+        CustomResponse.convert(
+            rawMemInfo,
+            (data) => (data as List)
+                .map(
+                    (item) => MemberInfo.fromJson(item as Map<String, dynamic>))
+                .toList());
     for (var item in memberInfoResponses.data) {
       _members.addIf(!_members.containsKey(item.memberId), item.memberId, item);
     }
   }
 
+  Future<void> handleApprovePost(String postId) async {
+    var headerPair = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': stateService.getToken()
+    };
+    await HttpUtil.post("/api/post/approve",
+        headers: headerPair, body: {"approvalId": adminId, "postId": postId});
+  }
+
+  Future<void> handleApproveEvent(String eventId) async {
+    var headerPair = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': stateService.getToken()
+    };
+    await HttpUtil.post("/api/event/approve",
+        headers: headerPair,
+        body: {"approvalId": adminId, "eventId": eventId});
+  }
+
+  Future<void> handleDeletePost(String postId) async {
+    var headerPair = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': stateService.getToken()
+    };
+    await HttpUtil.delete("/api/post/delete",
+        headers: headerPair, body: {"posterId": adminId, "postId": postId});
+  }
+
+  Future<void> handleDeleteEvent(String eventId) async {
+    var headerPair = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': stateService.getToken()
+    };
+    await HttpUtil.delete(
+      "/api/event/delete",
+        headers: headerPair,
+        body: {"hosterId": adminId, "eventId": eventId}
+    );
+  }
 }

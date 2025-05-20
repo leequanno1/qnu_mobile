@@ -42,11 +42,11 @@ class OrgScreen extends GetView<OrgController> {
               switch (value) {
                 case 0:
                   Get.toNamed(RouteNames.contentModeration,
-                      arguments: [ContentModerationController.postEnable,controller.org.orgId]);
+                      arguments: [ContentModerationController.postEnable,controller.org.orgId,controller.memberInfo.memberId]);
                   break;
                 case 1:
                   Get.toNamed(RouteNames.contentModeration,
-                      arguments: [ContentModerationController.eventEnable,controller.org.orgId]);
+                      arguments: [ContentModerationController.eventEnable,controller.org.orgId,controller.memberInfo.memberId]);
                   break;
                 case 2:
                   Get.put(ChangeGroupInfoController()).setOrg(controller.org);
@@ -87,9 +87,10 @@ class OrgScreen extends GetView<OrgController> {
                     child: Text("Duyệt sự kiện",
                         style: TextStyle(color: controller.isAdmin.value ?Colors.black: AppColors.disableButton))),
                 PopupMenuItem(
+                    enabled: controller.isAdmin.value,
                     value: 2,
-                    child: const Text("Chỉnh sửa thông tin",
-                        style: TextStyle(color: Colors.black))),
+                    child: Text("Chỉnh sửa thông tin",
+                        style: TextStyle(color: controller.isAdmin.value ?Colors.black: AppColors.disableButton))),
                 PopupMenuItem(
                     value: 3,
                     child: const Text("Tạo bài viết",

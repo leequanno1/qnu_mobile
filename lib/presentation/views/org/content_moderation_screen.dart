@@ -99,6 +99,7 @@ class ContentModerationScreen extends GetView<ContentModerationController> {
                         onPressed: () async {
                           // call API loại
                           controller.posts.remove(post);
+                          await controller.handleDeletePost(post.postDto.postId);
                           ToastUltil.showToast("Loại thành công bài viết của ${post.memberInfo.displayName}");
                         },
                         style: redBackgroundButton,
@@ -112,6 +113,7 @@ class ContentModerationScreen extends GetView<ContentModerationController> {
                         onPressed: () async {
                           // call API duyệt
                           controller.posts.remove(post);
+                          await controller.handleApprovePost(post.postDto.postId);
                           ToastUltil.showToast("Duyệt thành công bài viết của ${post.memberInfo.displayName}");
                         },
                         style: buttonPrimary,
@@ -140,9 +142,10 @@ class ContentModerationScreen extends GetView<ContentModerationController> {
                 SizedBox(
                     width: 100,
                     child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           //call API loại
                           controller.event.remove(event);
+                          await controller.handleDeleteEvent(event.eventDto.eventId);
                           ToastUltil.showToast("Loại thành công sự kiện của ${event.memberInfo.displayName}");
                         },
                         style: redBackgroundButton,
@@ -153,9 +156,10 @@ class ContentModerationScreen extends GetView<ContentModerationController> {
                 SizedBox(
                     width: 100,
                     child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           //call API duyệt
                           controller.event.remove(event);
+                          await controller.handleApproveEvent(event.eventDto.eventId);
                           ToastUltil.showToast("Duyệt thành công sự kiện của ${event.memberInfo.displayName}");
                         },
                         style: buttonPrimary,
