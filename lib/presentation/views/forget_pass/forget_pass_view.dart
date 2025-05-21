@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
+import 'package:qnu_mobile/controller/authent/forgot_pass_controller.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
 
 class ForgetPassView extends StatelessWidget {
-  const ForgetPassView({super.key});
+  ForgetPassView({super.key});
+  final ForgotPassController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class ForgetPassView extends StatelessWidget {
                 ),
                 //TK
                 TextFormField(
+                  controller: _controller.usernameController,
                   keyboardType: TextInputType.number,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
@@ -61,6 +64,7 @@ class ForgetPassView extends StatelessWidget {
                 //MXT
                 Stack(children: [
                   TextFormField(
+                    controller: _controller.codeController,
                     keyboardType: TextInputType.number,
                     style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
@@ -82,7 +86,9 @@ class ForgetPassView extends StatelessWidget {
                     child: SizedBox(
                       height: 48,
                       child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _controller.sendCode();
+                          },
                           style: buttonGreen,
                           child: Row(
                             children: [
@@ -90,7 +96,6 @@ class ForgetPassView extends StatelessWidget {
                                 PhosphorIconsBold.paperPlaneTilt,
                                 color: Colors.white,
                               ),
-                              Text("(10)")
                             ],
                           )),
                     ),
@@ -101,6 +106,7 @@ class ForgetPassView extends StatelessWidget {
                 ),
                 // MKM
                 TextFormField(
+                  controller: _controller.passwordController,
                   obscureText:true,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
@@ -122,6 +128,7 @@ class ForgetPassView extends StatelessWidget {
                 ),
                 // CF MKM
                 TextFormField(
+                  controller: _controller.repeatPassController,
                   obscureText:true,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
@@ -141,10 +148,10 @@ class ForgetPassView extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text(
-                  "Tài khoản hoặc mật khẩu không chính xác.",
+                Obx(() => Text(
+                  _controller.message.value,
                   style: TextStyle(color: AppColors.error),
-                ),
+                ),),
                 const SizedBox(
                   height: 15,
                 ),
@@ -152,7 +159,11 @@ class ForgetPassView extends StatelessWidget {
                     width: double.maxFinite,
                     height: 50,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          if(await _controller.onSubmit()){
+                            Get.back();
+                          }
+                        },
                         style: buttonPrimary,
                         child: Text("Đặt lại mật khẩu"))),
                 const SizedBox(

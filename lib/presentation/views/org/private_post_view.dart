@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
+import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/models/post.dart';
 import 'package:qnu_mobile/presentation/wigets/image_container.dart';
 import 'package:qnu_mobile/utils/date_time_format.dart';
@@ -7,9 +8,11 @@ import 'package:qnu_mobile/utils/http_ultil.dart';
 
 class PrivatePostView extends StatelessWidget {
   final Post post;
+  final OrgController? controller;
+  final bool forApproved;
   const PrivatePostView({
     super.key,
-    required this.post,
+    required this.post, required this.controller,this.forApproved = false,
   });
 
   @override
@@ -65,7 +68,21 @@ class PrivatePostView extends StatelessWidget {
                       Text(DateTimeFormat.toDateTime(post.postDto.insDate),
                           style: TextStyle(color: Colors.black))
                     ],
-                  )
+                  ),
+                  Spacer(),
+                  if(!forApproved && controller?.memberInfo.memberId == post.postDto.posterId)
+                  PopupMenuButton(
+                    onSelected: (value) async {
+                      switch (value) {
+                        case 0:
+                          controller?.deletePost(post);
+                          break;
+                        default:
+                      }
+                    },
+                    itemBuilder: (context) => [
+                    PopupMenuItem(value: 0, child: Text("Xóa"))
+                  ],)
                 ],
               ),
               // text

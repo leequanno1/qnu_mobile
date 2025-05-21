@@ -67,7 +67,7 @@ class LoginView extends StatelessWidget {
                       labelStyle: TextStyle(color: Colors.black)),
                 ),
                 const SizedBox(height: 10,),
-                const Text("Tài khoản hoặc mật khẩu không chính xác.", style: TextStyle(color: AppColors.error),),
+                Obx(() => Text(auController.message.value, style: TextStyle(color: AppColors.error),),),
                 const SizedBox(height: 15,),
                 SizedBox(width: double.maxFinite, height: 50, child: ElevatedButton(onPressed: () {auController.onSubmit();}, style: buttonPrimary, child: Text("Đăng nhập"))),
                 const SizedBox(height: 10,),

@@ -35,20 +35,23 @@ class OrgController extends GetxController {
     EventController eventController = Get.put(EventController());
     _posts.value = await postController.loadPostByOrgId(org.orgId);
     _events.value = await eventController.loadEventByOrgId(org.orgId);
-    memberInfo = (await getMemberInfoByOrgIdAndUserId(stateService.userInfo.value!.userId, _org.orgId));
+    memberInfo = (await getMemberInfoByOrgIdAndUserId(
+        stateService.userInfo.value!.userId, _org.orgId));
     isAdmin.value = memberInfo.roleLevel == 2;
   }
 
   void switchButtonTap(int switchIndex) async {
     _switchButtonIndex.value = switchIndex;
-    if(switchIndex == 0){
-      _posts.value = await Get.find<PostController>().loadPostByOrgId(org.orgId);
+    if (switchIndex == 0) {
+      _posts.value =
+          await Get.find<PostController>().loadPostByOrgId(org.orgId);
     } else {
-      _events.value = await Get.find<EventController>().loadEventByOrgId(org.orgId);
+      _events.value =
+          await Get.find<EventController>().loadEventByOrgId(org.orgId);
     }
   }
 
-  Future<Map<String,Org>> loadOrgList() async {
+  Future<Map<String, Org>> loadOrgList() async {
     var headerPair = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -62,15 +65,16 @@ class OrgController extends GetxController {
         (data) => (data as List)
             .map((item) => OrgDto.fromJson(item as Map<String, dynamic>))
             .toList());
-    Map<String,Org> orgMap = {};
-    for(var item in orgResponses.data){
+    Map<String, Org> orgMap = {};
+    for (var item in orgResponses.data) {
       orgMap.addIf(true, item.orgId, Org.fromDto(item));
     }
     _orgList.addAll(orgMap);
     return orgMap;
   }
 
-  Future<MemberInfo> getMemberInfoByOrgIdAndUserId(String userId, String orgId) async {
+  Future<MemberInfo> getMemberInfoByOrgIdAndUserId(
+      String userId, String orgId) async {
     var headerPair = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -78,20 +82,78 @@ class OrgController extends GetxController {
     };
     dynamic rawResponse = await HttpUtil.post(
         "/api/member/get_info_by_user_id_and_org_id",
-        body: {
-          "userId": userId,
-          "orgId": orgId
-        },
+        body: {"userId": userId, "orgId": orgId},
         headers: headerPair);
-    CustomResponse<MemberInfo> memInfoResponse = CustomResponse.convert(rawResponse, (json) => MemberInfo.fromJson(json));
+    CustomResponse<MemberInfo> memInfoResponse = CustomResponse.convert(
+        rawResponse, (json) => MemberInfo.fromJson(json));
     return memInfoResponse.data;
   }
 
-  void setSelectedOrg(String orgId){
+  void setSelectedOrg(String orgId) {
     _org = _orgList[orgId]!;
   }
 
   List<Org> getOrgList() {
     return _orgList.values.toList();
+  }
+
+  Future<void> followOrUnfollow(Event event) async {
+    var headerPair = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': stateService.getToken()
+    };
+
+    try {
+      if (event.eventDto.join) {
+        await _outEvent(event, headerPair);
+      } else {
+        await _joinEvent(event, headerPair);
+      }
+      int index = events.indexOf(event);
+      event.eventDto.join = !event.eventDto.join;
+      _events[index] = event;
+    } catch (e) {}
+  }
+
+  Future<void> _joinEvent(Event event, Map<String, String> headerPair) async {
+    await HttpUtil.post("/api/event/join_event",
+        body: {"eventId": event.eventDto.eventId}, headers: headerPair);
+  }
+
+  Future<void> _outEvent(Event event, Map<String, String> headerPair) async {
+    await HttpUtil.post("/api/event/out_event",
+        body: {"eventId": event.eventDto.eventId}, headers: headerPair);
+  }
+
+  Future<void> deleteEvent(Event event) async {
+    var headerPair = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': stateService.getToken()
+    };
+    try {
+      await HttpUtil.delete("/api/event/delete",
+          body: {
+            "eventId": event.eventDto.eventId,
+            "hosterId": event.eventDto.hosterId
+          },
+          headers: headerPair);
+      events.remove(event);
+    } catch (e) {}
+  }
+
+  Future<void> deletePost(Post post) async {
+    var headerPair = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': stateService.getToken()
+    };
+    try {
+      await HttpUtil.delete("/api/post/delete",
+          body: {"postId": post.postDto.postId, "posterId": post.postDto.posterId},
+          headers: headerPair);
+      posts.remove(post);
+    } catch (e) {}
   }
 }

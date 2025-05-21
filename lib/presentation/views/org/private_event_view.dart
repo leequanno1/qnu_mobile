@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
+import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/models/event.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
 import 'package:qnu_mobile/presentation/wigets/image_container.dart';
@@ -8,9 +10,10 @@ import 'package:qnu_mobile/utils/http_ultil.dart';
 
 class PrivateEventView extends StatelessWidget {
   final Event eventItem;
+  final OrgController? controller;
   final bool forApproved;
   const PrivateEventView(
-      {super.key, required this.eventItem, this.forApproved = false});
+      {super.key, required this.eventItem, required this.controller, this.forApproved = false,});
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +71,17 @@ class PrivateEventView extends StatelessWidget {
                     ],
                   ),
                   Spacer(),
-                  if (!forApproved)
+                  if (!forApproved && eventItem.eventDto.hosterId != controller?.memberInfo.memberId)
                     SizedBox(
                       height: 40,
-                      width: 100,
+                      width: 115,
                       child: ElevatedButton(
                           onPressed:
                               eventItem.eventDto.begin.isBefore(DateTime.now())
                                   ? null
-                                  : () {},
+                                  : () async {
+                                    controller?.followOrUnfollow(eventItem);
+                                  },
                           style: borderButtonEnable,
                           child: eventItem.eventDto.join
                               ? Text(
@@ -85,7 +90,21 @@ class PrivateEventView extends StatelessWidget {
                                 )
                               : Text("Đăng ký",
                                   style: TextStyle(fontSize: 12))),
-                    )
+                    ),
+                  if (!forApproved && eventItem.eventDto.hosterId == controller?.memberInfo.memberId)
+                    PopupMenuButton(
+                      icon: Icon(PhosphorIconsBold.dotsThreeVertical),
+                      onSelected: (value) async {
+                        switch (value) {
+                          case 0:
+                            controller?.deleteEvent(eventItem);
+                            break;
+                          default:
+                        }
+                      },
+                      itemBuilder: (context) => [
+                      PopupMenuItem(value: 0, child: Text("Xóa"))
+                    ],)
                 ],
               ),
               // time

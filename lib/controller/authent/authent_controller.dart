@@ -11,6 +11,7 @@ class AuthentController extends GetxController {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   StateService stateService = Get.find<StateService>();
+  RxString message = "".obs;
 
   Future<void> onSubmit() async {
     try {
@@ -29,7 +30,7 @@ class AuthentController extends GetxController {
       // await Get.put(ProfileController()).resetController();
       Get.offNamed(RouteNames.splash);
     } catch (e) {
-      print(e);
+      message.value = "Tài khoản hoặc mật khẩu không chính xác";
     }
   }
 

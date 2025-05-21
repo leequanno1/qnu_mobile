@@ -35,7 +35,12 @@ class CreateEventController extends GetxController {
       final start = dateController.startTime.value;
       final end = dateController.endTime.value;
       final images = imgController.pickedImages;
-      await _uploadEvent(memberId, title, content, start!, end!, images);
+      try {
+        await _uploadEvent(memberId, title, content, start!, end!, images);
+        inputReset();
+        imgController.clearImages();
+        Get.back();
+      } catch (e) { }
     }
   }
 

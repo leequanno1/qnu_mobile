@@ -26,7 +26,12 @@ class CreatePostController extends GetxController {
           Get.put(ImagePickerController());
       final title = titleController.text;
       final content = contentController.text;
-      await _uploadPost(memberId, title, content, imgController.pickedImages);
+      try {
+        await _uploadPost(memberId, title, content, imgController.pickedImages);
+        inputReset();
+        imgController.clearImages();
+        Get.back();
+      } catch (e) { }
     }
   }
 

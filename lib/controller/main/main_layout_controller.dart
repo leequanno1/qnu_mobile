@@ -23,6 +23,14 @@ class MainLayoutController extends GetxController {
     ProfileView(),
   ];
 
+  T findOrPut<T extends GetxController>(T Function() creator) {
+  if (Get.isRegistered<T>()) {
+    return Get.find<T>();
+  } else {
+    return Get.put<T>(creator());
+  }
+}
+
   // final List<AppBar> appBars = [
   //   // Post
   //   PostAppbar.getAppBar(),
@@ -61,7 +69,7 @@ class MainLayoutController extends GetxController {
         break;
       case 1:
         // reload Event
-        Get.find<EventController>().loadEvent();
+        findOrPut<EventController>(()=>EventController()).loadEvent();
         break;
     }
   }

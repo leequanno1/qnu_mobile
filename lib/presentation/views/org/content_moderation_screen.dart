@@ -85,7 +85,7 @@ class ContentModerationScreen extends GetView<ContentModerationController> {
   Widget _PrivatePostView(Post post, ContentModerationController controller) {
     return Column(
       children: [
-        PrivatePostView(post: post),
+        PrivatePostView(post: post, controller: null,),
         Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: SizedBox(
@@ -131,7 +131,7 @@ class ContentModerationScreen extends GetView<ContentModerationController> {
       Event event, ContentModerationController controller) {
     return Column(
       children: [
-        PrivateEventView(eventItem: event, forApproved: true,),
+        PrivateEventView(eventItem: event, controller: null, forApproved: true,),
         Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: SizedBox(

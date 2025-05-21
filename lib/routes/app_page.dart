@@ -44,7 +44,7 @@ class AppPages {
 
     GetPage(
       name: RouteNames.forgotPassword, 
-      page: () => const ForgetPassView(),
+      page: () => ForgetPassView(),
       binding: ForgotPassBiding(),
     ),
     

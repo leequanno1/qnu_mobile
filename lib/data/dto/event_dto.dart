@@ -10,11 +10,11 @@ class EventDto {
   final int participants;
   final DateTime insDate;
   final bool delFlg;
-  final bool isApproved;
+  bool isApproved;
   final String orgId;
   final List<OrgImage> images;
   final String userId;
-  final bool join;
+  bool join;
 
   EventDto({
     required this.eventId,

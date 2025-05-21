@@ -106,11 +106,14 @@ class _PublicEventItem extends StatelessWidget {
                         ],
                       ),
                       Spacer(),
-                      SizedBox(
+                      controller.curentMemberId.contains(event.memberInfo.memberId)? SizedBox(height: 40,) : 
+                        SizedBox(
                         height: 40,
-                        width: 95,
+                        width: 115,
                         child: ElevatedButton(
-                            onPressed: event.eventDto.begin.isBefore(DateTime.now())?null:(){},
+                            onPressed: event.eventDto.begin.isBefore(DateTime.now())?null:() async {
+                              controller.followOrUnfollow(event);
+                            },
                             style: borderButtonEnable,
                             child: event.eventDto.join
                                 ? Text("Đã đăng ký", style: TextStyle(fontSize: 12),)

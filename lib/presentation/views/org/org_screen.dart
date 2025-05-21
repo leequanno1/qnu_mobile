@@ -208,8 +208,8 @@ class OrgScreen extends GetView<OrgController> {
                 itemBuilder: (context, index) {
                   return controller.switchButtonIndex.value ==
                           controller.postIndex
-                      ? PrivatePostView(post: controller.posts[index])
-                      : PrivateEventView(eventItem: controller.events[index]);
+                      ? PrivatePostView(post: controller.posts[index], controller: controller,)
+                      : PrivateEventView(eventItem: controller.events[index], controller: controller,);
                 },
               ))
         ],
