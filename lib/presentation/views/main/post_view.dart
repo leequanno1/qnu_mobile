@@ -5,6 +5,7 @@ import 'package:qnu_mobile/controller/main/post_controller.dart';
 import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/models/post.dart';
 import 'package:qnu_mobile/presentation/wigets/image_container.dart';
+import 'package:qnu_mobile/presentation/wigets/image_overlay_viewer.dart';
 import 'package:qnu_mobile/routes/route_name.dart';
 import 'package:qnu_mobile/utils/date_time_format.dart';
 import 'package:qnu_mobile/utils/http_ultil.dart';
@@ -142,8 +143,16 @@ class _PublicPostItem extends StatelessWidget {
                           child: SizedBox(
                               width: boxWidth,
                               height: 190,
-                              child: ImageContainer(
-                                  imageDTO: post.postDto.images[index])),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.to(() => ImageOverlayViewer(
+                                    images: post.postDto.images.map((item) => item.imageUrl).toList(),
+                                    initialIndex: index,
+                                  ));
+                                },
+                                child: ImageContainer(
+                                    imageDTO: post.postDto.images[index]),
+                              )),
                         );
                       }
                       return Padding(
@@ -152,8 +161,16 @@ class _PublicPostItem extends StatelessWidget {
                           height: 190,
                           width: boxWidth,
                           margin: EdgeInsets.only(right: 5),
-                          child: ImageContainer(
-                              imageDTO: post.postDto.images[index]),
+                          child: GestureDetector(
+                            onTap: () {
+                                  Get.to(() => ImageOverlayViewer(
+                                    images: post.postDto.images.map((item) => item.imageUrl).toList(),
+                                    initialIndex: index,
+                                  ));
+                                },
+                            child: ImageContainer(
+                                imageDTO: post.postDto.images[index]),
+                          ),
                         ),
                       );
                     },

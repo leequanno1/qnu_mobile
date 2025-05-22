@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:qnu_mobile/biding/active_account_biding.dart';
 import 'package:qnu_mobile/biding/content_moderation_biding.dart';
 import 'package:qnu_mobile/biding/forgot_pass_biding.dart';
 import 'package:qnu_mobile/biding/login_biding.dart';
@@ -6,6 +7,7 @@ import 'package:qnu_mobile/biding/main_layout_biding.dart';
 import 'package:qnu_mobile/biding/org_screen_biding.dart';
 import 'package:qnu_mobile/middlewares/authent_middleware.dart';
 import 'package:qnu_mobile/presentation/views/forget_pass/forget_pass_view.dart';
+import 'package:qnu_mobile/presentation/views/login/active_account_view.dart';
 import 'package:qnu_mobile/presentation/views/login/login_view.dart';
 import 'package:qnu_mobile/presentation/views/main/main_layout.dart';
 import 'package:qnu_mobile/presentation/views/org/content_moderation_screen.dart';
@@ -48,5 +50,10 @@ class AppPages {
       binding: ForgotPassBiding(),
     ),
     
+    GetPage(
+      name: RouteNames.activeAccount, 
+      page: () => ActiveAccountView(),
+      binding: ActiveAccountBiding(),
+    )
   ];
 }

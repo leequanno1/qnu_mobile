@@ -25,10 +25,14 @@ class AuthentController extends GetxController {
           ),
           (json) => Token.fromJson(json));
       print(response.data.token);
-      await stateService.setAuthenticated(true, response.data.token);
-      await Get.put(OrgController()).loadOrgList();
+      bool isPasswordValidated = await stateService.setAuthenticated(true, response.data.token);
       // await Get.put(ProfileController()).resetController();
-      Get.offNamed(RouteNames.splash);
+      if(isPasswordValidated) {
+        await Get.put(OrgController()).loadOrgList();
+        Get.offNamed(RouteNames.splash);
+      } else {
+        Get.toNamed(RouteNames.activeAccount);
+      }
     } catch (e) {
       message.value = "Tài khoản hoặc mật khẩu không chính xác";
     }

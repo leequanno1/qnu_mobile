@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
 import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/models/post.dart';
 import 'package:qnu_mobile/presentation/wigets/image_container.dart';
+import 'package:qnu_mobile/presentation/wigets/image_overlay_viewer.dart';
 import 'package:qnu_mobile/utils/date_time_format.dart';
 import 'package:qnu_mobile/utils/http_ultil.dart';
 
@@ -116,15 +119,31 @@ class PrivatePostView extends StatelessWidget {
                         return SizedBox(
                             width: boxWidth,
                             height: 180,
-                            child: ImageContainer(
-                                imageDTO: post.postDto.images[index]));
+                            child: GestureDetector(
+                              onTap: () {
+                                  Get.to(() => ImageOverlayViewer(
+                                    images: post.postDto.images.map((item) => item.imageUrl).toList(),
+                                    initialIndex: index,
+                                  ));
+                                },
+                              child: ImageContainer(
+                                  imageDTO: post.postDto.images[index]),
+                            ));
                       }
                       return Container(
                         height: 180,
                         width: boxWidth,
                         margin: EdgeInsets.only(right: 5),
-                        child: ImageContainer(
-                            imageDTO: post.postDto.images[index]),
+                        child: GestureDetector(
+                          onTap: () {
+                                  Get.to(() => ImageOverlayViewer(
+                                    images: post.postDto.images.map((item) => item.imageUrl).toList(),
+                                    initialIndex: index,
+                                  ));
+                                },
+                          child: ImageContainer(
+                              imageDTO: post.postDto.images[index]),
+                        ),
                       );
                     },
                   ),

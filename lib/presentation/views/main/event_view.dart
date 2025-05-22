@@ -6,6 +6,7 @@ import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/models/event.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
 import 'package:qnu_mobile/presentation/wigets/image_container.dart';
+import 'package:qnu_mobile/presentation/wigets/image_overlay_viewer.dart';
 import 'package:qnu_mobile/routes/route_name.dart';
 import 'package:qnu_mobile/utils/date_time_format.dart';
 import 'package:qnu_mobile/utils/http_ultil.dart';
@@ -161,7 +162,14 @@ class _PublicEventItem extends StatelessWidget {
                               width: boxWidth,
                               height: 190,
                               child:
-                                  ImageContainer(imageDTO: event.eventDto.images[index])),
+                                  GestureDetector(
+                                    onTap: () {
+                                  Get.to(() => ImageOverlayViewer(
+                                    images: event.eventDto.images.map((item) => item.imageUrl).toList(),
+                                    initialIndex: index,
+                                  ));
+                                },
+                                    child: ImageContainer(imageDTO: event.eventDto.images[index]))),
                         );
                       }
                       return Padding(
@@ -170,7 +178,14 @@ class _PublicEventItem extends StatelessWidget {
                           height: 190,
                           width: boxWidth,
                           margin: EdgeInsets.only(right: 5),
-                          child: ImageContainer(imageDTO: event.eventDto.images[index]),
+                          child: GestureDetector(
+                            onTap: () {
+                                  Get.to(() => ImageOverlayViewer(
+                                    images: event.eventDto.images.map((item) => item.imageUrl).toList(),
+                                    initialIndex: index,
+                                  ));
+                                },
+                            child: ImageContainer(imageDTO: event.eventDto.images[index])),
                         ),
                       );
                     },

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qnu_mobile/assets/app_color.dart';
 import 'package:qnu_mobile/controller/org/org_controller.dart';
 import 'package:qnu_mobile/models/event.dart';
 import 'package:qnu_mobile/presentation/styles/button_style.dart';
 import 'package:qnu_mobile/presentation/wigets/image_container.dart';
+import 'package:qnu_mobile/presentation/wigets/image_overlay_viewer.dart';
 import 'package:qnu_mobile/utils/date_time_format.dart';
 import 'package:qnu_mobile/utils/http_ultil.dart';
 
@@ -163,8 +166,16 @@ class PrivateEventView extends StatelessWidget {
                           child: SizedBox(
                               width: boxWidth,
                               height: 190,
-                              child: ImageContainer(
-                                  imageDTO: eventItem.eventDto.images[index])),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.to(() => ImageOverlayViewer(
+                                    images: eventItem.eventDto.images.map((item) => item.imageUrl).toList(),
+                                    initialIndex: index,
+                                  ));
+                                },
+                                child: ImageContainer(
+                                    imageDTO: eventItem.eventDto.images[index]),
+                              )),
                         );
                       }
                       return Padding(
@@ -173,8 +184,16 @@ class PrivateEventView extends StatelessWidget {
                           height: 190,
                           width: boxWidth,
                           margin: EdgeInsets.only(right: 5),
-                          child: ImageContainer(
-                              imageDTO: eventItem.eventDto.images[index]),
+                          child: GestureDetector(
+                            onTap: () {
+                                  Get.to(() => ImageOverlayViewer(
+                                    images: eventItem.eventDto.images.map((item) => item.imageUrl).toList(),
+                                    initialIndex: index,
+                                  ));
+                                },
+                            child: ImageContainer(
+                                imageDTO: eventItem.eventDto.images[index]),
+                          ),
                         ),
                       );
                     },

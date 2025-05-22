@@ -19,10 +19,10 @@ class StateService extends GetxService {
 
   bool get isAuthenticated => _isAuthenticated.value;
 
-  Future<void> setAuthenticated(bool value, String token) async {
+  Future<bool> setAuthenticated(bool value, String token) async {
     _isAuthenticated.value = value;
     _token = token;
-    String tempId = extractSubFromJwt(token)??"";
+    String tempId = extractSubFromJwt(token, 'sub')??"";
     //get userType
     CustomResponse<List<UserInfo>> response = CustomResponse.convert(
       await HttpUtil.post("/api/user/get_user_info", body: {
@@ -43,6 +43,7 @@ class StateService extends GetxService {
     } else {
       staffInfo.value = await getStaffUserInfo();
     }
+    return extractSubFromJwt(token, "is_password_validated")=="true";
   }
 
   Future<bool> checkAuth() async {
@@ -81,7 +82,7 @@ class StateService extends GetxService {
     return response.data;
   }
 
-  String? extractSubFromJwt(String token) {
+  String? extractSubFromJwt(String token, String keyWord) {
     try {
       final parts = token.split('.');
       if (parts.length != 3) {
@@ -96,7 +97,7 @@ class StateService extends GetxService {
       if (payloadMap is! Map<String, dynamic>) {
         throw FormatException('Invalid payload');
       }
-      return payloadMap['sub'];
+      return payloadMap[keyWord].toString();
     } catch (e) {
       return null;
     }

@@ -17,5 +17,6 @@ class RouteNames {
   static const String createPost = '/create-post';
   static const String event = '/event';
   static const String createEvent = '/create-event';
+  static const String activeAccount = '/active-account';
 
 }
