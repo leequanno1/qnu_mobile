@@ -10,7 +10,7 @@ class PostDto {
   final bool delFlg;
   final bool isApproved;
   final String orgId;
-  final List<OrgImage> images;
+  List<OrgImage> images;
 
   PostDto({
     required this.postId,

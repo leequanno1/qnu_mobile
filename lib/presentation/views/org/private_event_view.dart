@@ -106,7 +106,7 @@ class PrivateEventView extends StatelessWidget {
                         }
                       },
                       itemBuilder: (context) => [
-                      PopupMenuItem(value: 0, child: Text("Xóa"))
+                      PopupMenuItem(value: 0, child: Text("Xóa", style: TextStyle(color: Colors.black),))
                     ],)
                 ],
               ),

@@ -31,12 +31,12 @@ class OrgController extends GetxController {
     _switchButtonIndex = postIndex.obs;
     _posts.clear();
     _events.clear();
+    memberInfo = (await getMemberInfoByOrgIdAndUserId(
+        stateService.userInfo.value!.userId, _org.orgId));
     PostController postController = Get.put(PostController());
     EventController eventController = Get.put(EventController());
     _posts.value = await postController.loadPostByOrgId(org.orgId);
     _events.value = await eventController.loadEventByOrgId(org.orgId);
-    memberInfo = (await getMemberInfoByOrgIdAndUserId(
-        stateService.userInfo.value!.userId, _org.orgId));
     isAdmin.value = memberInfo.roleLevel == 2;
   }
 

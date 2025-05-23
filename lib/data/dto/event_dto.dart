@@ -12,7 +12,7 @@ class EventDto {
   final bool delFlg;
   bool isApproved;
   final String orgId;
-  final List<OrgImage> images;
+  List<OrgImage> images;
   final String userId;
   bool join;
 

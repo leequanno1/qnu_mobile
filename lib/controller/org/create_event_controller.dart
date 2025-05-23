@@ -47,6 +47,7 @@ class CreateEventController extends GetxController {
   void inputReset() {
     titleController.text = "";
     contentController.text = "";
+    dateController.dataReset();
   }
 
   _uploadEvent(String hosterId, String title, String content, DateTime start, DateTime end ,List<File> pickedImages) async {

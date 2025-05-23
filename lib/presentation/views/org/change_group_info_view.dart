@@ -63,7 +63,7 @@ class ChangeGroupInfoView extends StatelessWidget {
                           child:
                               controller.backgroundImg.value.second?
                               _renderImage(controller.backgroundImg.value.first):
-                              Image.network(HttpUtil.mapUrl(controller.org.orgBackground)),
+                              Image.network(HttpUtil.mapUrl(controller.org.orgBackground),fit: BoxFit.cover,),
                         ),
                       ),
                     ),
@@ -88,7 +88,7 @@ class ChangeGroupInfoView extends StatelessWidget {
                             child: SizedBox(
                               width: 100,
                               height: 100,
-                              child: Image.network(HttpUtil.mapUrl(controller.org.orgAvatar), errorBuilder: (context, error, stackTrace) => SizedBox.shrink(),)),
+                              child: Image.network(HttpUtil.mapUrl(controller.org.orgAvatar), errorBuilder: (context, error, stackTrace) => SizedBox.shrink(),fit: BoxFit.cover,),),
                           )
                           ),
                         ),
@@ -123,7 +123,12 @@ class ChangeGroupInfoView extends StatelessWidget {
                               SizedBox(
                                   width: double.maxFinite,
                                   child: ElevatedButton(
-                                    onPressed: () => controller.submit(),
+                                    onPressed: () async {
+                                      try {
+                                        await controller.submit();
+                                        Get.back();
+                                      } catch (e) {}
+                                    },
                                     style: buttonPrimary,
                                     child: Text("Lưu thay đổi"),
                                   ))

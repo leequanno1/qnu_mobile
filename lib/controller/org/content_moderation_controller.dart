@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:qnu_mobile/data/dto/custom_response.dart';
 import 'package:qnu_mobile/data/dto/event_dto.dart';
 import 'package:qnu_mobile/data/dto/member_info.dart';
+import 'package:qnu_mobile/data/dto/org_image.dart';
 import 'package:qnu_mobile/data/dto/post_dto.dart';
 import 'package:qnu_mobile/data/services/state_service.dart';
 import 'package:qnu_mobile/models/event.dart';
@@ -46,6 +47,7 @@ class ContentModerationController extends GetxController {
   }
 
   Future<void> _loadPosts() async {
+    _posts.clear();
     var headerPair = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -69,13 +71,16 @@ class ContentModerationController extends GetxController {
         postResponses.data.map((item) => item.posterId).toSet();
     // call get member info
     await handleGetMemberInfo(memberIds, headerPair);
-    _posts.clear();
+    // call get all image
+    List<OrgImage> images = await handleGetImages(postResponses.data.map((item) => item.postId).toList(), headerPair);
     for (var item in postResponses.data) {
+      item.images = getImageList(images, item.postId);
       _posts.add(Post(item, _members[item.posterId]!));
     }
   }
 
   Future<void> _loadEvents() async {
+    _event.clear();
     var headerPair = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -99,8 +104,9 @@ class ContentModerationController extends GetxController {
         postResponses.data.map((item) => item.hosterId).toSet();
     // call get member info
     await handleGetMemberInfo(memberIds, headerPair);
-    _event.clear();
+    List<OrgImage> images = await handleGetImages(postResponses.data.map((item) => item.eventId).toList(), headerPair);
     for (var item in postResponses.data) {
+      item.images = getImageList(images, item.eventId);
       _event.add(Event(item, _members[item.hosterId]!));
     }
   }
@@ -163,5 +169,24 @@ class ContentModerationController extends GetxController {
         headers: headerPair,
         body: {"hosterId": adminId, "eventId": eventId}
     );
+  }
+
+  Future<List<OrgImage>> handleGetImages(List<String> ids,
+      Map<String, String> headerPair) async {
+    dynamic rawImages = await HttpUtil.post("/api/image/get-images",
+        body: {
+          "parentIds": ids,
+        },
+        headers: headerPair);
+    CustomResponse<List<OrgImage>> imageResponses = CustomResponse.convert(
+        rawImages,
+        (data) => (data as List)
+            .map((item) => OrgImage.fromJson(item as Map<String, dynamic>))
+            .toList());
+    return imageResponses.data;
+  }
+
+  List<OrgImage> getImageList(List<OrgImage> data, String postId) {
+    return data.where((item) => item.parentId == postId).toList();
   }
 }
