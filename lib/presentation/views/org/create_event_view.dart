@@ -142,7 +142,7 @@ class CreateEventView extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: TextFormField(
                       controller: controller.contentController,
-                      minLines: 10,
+                      minLines: 8,
                       maxLines: 100,
                       style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
